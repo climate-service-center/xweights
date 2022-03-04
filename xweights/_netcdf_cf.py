@@ -1,4 +1,4 @@
-from ._domain oimport get_domain
+from ._domains import get_domain
 
 
 def adjust_vertices(ds, domain_name=None):

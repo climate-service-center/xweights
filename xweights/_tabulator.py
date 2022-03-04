@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def write_to_pandas(da, 
                     columns, 
@@ -7,7 +8,7 @@ def write_to_pandas(da,
                     name='name', 
                     var='var'):
 
-    df_output = pd.DataFrame(output, columns=columns,dtype=float)
+    df_output = pd.DataFrame(da, columns=columns,dtype=float)
     df_output[index.name] = index.values
     df_output['variable'] = [var]*len(index)
     for key, value in column_dict.items():
@@ -31,7 +32,7 @@ def concat_dataframe(dataframe,
                                                name=name,
                                                var=var)
                                ])
-return dataframe
+    return dataframe
 
 def write_to_csv(dataframe, output):
     if os.path.isdir(output):
@@ -41,4 +42,5 @@ def write_to_csv(dataframe, output):
     else:
         outfile=output+'.csv'
     dataframe.to_csv(outfile)
+    print(dataframe)
     print('File written: {}'.format(outfile))

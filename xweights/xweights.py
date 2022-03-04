@@ -7,23 +7,24 @@ from ._tabulator import (concat_dataframe,
                          write_to_csv)
 from ._weightings import spatial_averager
 
-import os
 import warnings
 import pandas as pd
+import geopandas as gpd
 
-def comput_weighted_means_ds(ds,
-                             ds_name='dataset',
-                             domain_name=None,
-                             time_range=None,
-                             column_names=[],
-                             shp=None,
-                             subregion=None,
-                             merge_columns=False,
-                             column_merge=False,
-                             land_only=False,
-                             df_output=pd.DataFrame(),
-                             output=None,
-                             ):
+def compute_weighted_means_ds(ds,
+                              ds_name='dataset',
+                              domain_name=None,
+                              time_range=None,
+                              column_names=[],
+                              shp=None,
+                              subregion=None,
+                              merge_columns=False,
+                              column_merge=False,
+                              land_only=False,
+                              time_stat=False,
+                              df_output=pd.DataFrame(),
+                              output=None,
+                              ):
 
     if land_only:
             """
@@ -42,13 +43,15 @@ def comput_weighted_means_ds(ds,
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 
-    column_dict = {column:ds.attrs[column] for column in column_names if hasattr(ds.attrs, column) else None}
+    column_dict = {column:ds.attrs[column] if hasattr(ds, column) else None for column in column_names}
 
-    if os.path.isfile(shp):
+
+    if not isinstance(shp, gpd.GeoDataFrame):
         shp = get_region(shp,
                          name=subregion,
                          merge=merge_columns,
                          column=column_merge)
+
     out = spatial_averager(ds, shp)
 
     if time_stat:
@@ -57,7 +60,7 @@ def comput_weighted_means_ds(ds,
         """
         NotImplementedError  
 
-    df_output = _concat_dataframe(df_output, variables, out, index=out.time, column_dict=column_dict, name=ds_name)
+    df_output = concat_dataframe(df_output, variables, out, index=out.time, column_dict=column_dict, name=ds_name)
 
     if output:
         write_to_csv(df_output, output)
@@ -75,7 +78,6 @@ def compute_weighted_means(input,
                            land_only=False,
                            outdir=None,
                            time_stat=False,
-                           land_only=False,
                            **kwargs):
 
     def _calc_time_statistics(ds, statistics):
@@ -104,7 +106,7 @@ def compute_weighted_means(input,
                                               )
 
     if outdir:
-        _write_to_csv(df_output, outdir)
+        write_to_csv(df_output, outdir)
 
     return df_output
 
