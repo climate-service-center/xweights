@@ -8,6 +8,18 @@ import numpy as np
 import cordex as cx
 
 def get_variable_name(ds):
+    """List of CF variables in xr.Dataset
+
+    Parameters
+    ----------
+    ds: xr.Dataset
+        xarray Dataset
+
+    Returns
+    -------
+    list
+        List of CF variables
+    """
     
     def condition(ds, var):
         return len(ds[var].coords) == len(ds.coords)
@@ -30,6 +42,31 @@ def get_variable_name(ds):
         return [ds.name]
 
 def adjust_name(string):
+    """Delete special character from string and replace umlauts.
+    If string is a directory path: Replace slashes with underscores
+    If string is a netCDF file name: Delete directory path and suffix
+
+    Parameters
+    ----------
+    string: str
+
+    Returns
+    -------
+    str
+
+    Example
+    -------
+    Adjust name of string:
+
+        import xweights as xw
+
+        string =  '/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/tas/v20171121/tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc'
+
+        new_string = xw.adjust_name(string)
+
+        new_string: tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon_200601-201012
+
+    """
     string = string.replace(' ','-')
     string = string.replace('(','')
     string = string.replace(')','')
@@ -45,6 +82,18 @@ def adjust_name(string):
         return string
 
 def create_newname(vars, name):
+    """Create new name for string
+
+    Parameters
+    ----------
+    vars: list
+        List of CF variables
+    name: str
+        
+    Returns
+    -------
+    str
+    """
 
     def newname(name, var):
         if var not in name: name = '{}.{}'.format(var, name)
@@ -52,11 +101,39 @@ def create_newname(vars, name):
     return adjust_name([newname(name, var) for var in vars][0])
 
 class Input:
-    
+    """The :class:`Input` creates a dataset dictionary containing all given input files
+    dataset_dict = {name_of_xrDataset : xrDataset}
+    Valid input files are netCDF file(s), directories containing those files and intake-esm catalogue files
+
+    **Attributes:**
+        *dataset_dict:*
+            dictionary
+
+    Example
+    -------
+       To create a xarray dataset dictionary from intake-esm catalogue file using some extra filter options
+
+           import xweights as xw
+
+           catfile = '/work/kd0956/Catalogs/mistral-cordex.json'
+
+           dataset_dict = xw.Input(catfile, variable_id=tas, experiment_id=rcp85, table_id=mon)
+       
+       To create a xarray dataset dictionary from netCDF file on disk
+
+           import xweights as xw
+
+           netcdffile = '/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/tas/v20171121/tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc'
+
+           dataset_dict = xw.Input(netcdffile).dataset_dict
+
+    """
+
     def  __init__(self, input, **kwargs):
         self.dataset_dict = self.create_dataset_dict(input, **kwargs)
 
     def open_intake_esm_catalogue(self, catfile, **kwargs):
+        """Function to open an intake-sm catalogue"""
         cat = intake.open_esm_datastore(catfile)
         if kwargs: cat = cat.search(**kwargs)
         with dask.config.set(**{'array.slicing.split_large_chuncks': False}):
@@ -82,6 +159,7 @@ class Input:
         return xr.decode_cf(ds, use_cftime=use_cftime, decode_timedelta=False)
 
     def create_input_dictionary(self, input, **kwargs):
+        """Function to create xarray dataset dictionary from input"""
 
         def _create_filelist(input_lst):
             file_lst = []
@@ -121,6 +199,7 @@ class Input:
 
 
     def identify_input_format(self, input, **kwargs):
+        """Function to identify input file format"""
         if isinstance(input, str): 
             input = [input]
         if isinstance(input, list):
@@ -130,6 +209,7 @@ class Input:
         return inputdict
 
     def create_dataset_dict(self, input, **kwargs):
+        """Returns xarray dataset dictionary"""
         inputdict = self.identify_input_format(input, **kwargs)
         if not inputdict:
             raise IndexError ('Empty file dictionary')

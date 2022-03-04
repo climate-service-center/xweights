@@ -6,7 +6,21 @@ from ._geometry import (convert_crs,
                         merge_entries)
 
 class Regions:
+    """The :class:`Regions` provides gp.GeoDataFrames of pre-defined regions.  
+    In addition, you can create a new region gp.GeoDataFrame by specifying a shapefile on disk.
 
+    **Attributes:**
+        *regions:* list
+            List of pre-defined regions (from py-cordex)
+        *counties:* class
+            Containing information about Landkreise in Germany
+        *states:* class
+            Containing information about Bundeslaender in Germany
+        *prudence:* class
+            Containing information about PRUDENCE regions
+        *userreg*: class
+            Containing information about user-given shapefile
+    """
     def __init__(self, geodataframe=None, selection=None):
         self.regions = ['counties', 'states', 'prudence']
         self.counties = self.Counties()
@@ -64,18 +78,77 @@ def _region_dict(func, reg):
     return {name : func(name) for name in reg if hasattr(Regions, name)}
 
 def which_regions():
+    """Dictionary containing names of all pre-defined regions
+
+    Returns
+    -------
+    dict
+        Dictionary containing names of all pre-defined regions
+    """
     regions = Regions().regions
     func = regions.get_description
     return _region_dict(func, regions)
 
 def which_subregions(region):
+    """Dictionary containing names of all subregions of one pre-defined region
+
+    Parameters
+    ----------
+    region: str
+        Name of pre-defined region
+
+    Returns
+    -------
+    dict
+        Dictionary containing names of all subgregions of one pre-defined region
+    """
     if isinstance(region, str): region = [region]
     region = [r.lower() for r in region]
     func = Regions().get_region_names 
     return _region_dict(func, region)
 
 def get_region(region_names, name=None, merge=None, column=None):
+    """GeoDataFrame containg region information
+
+    Parameters
+    ----------
+    region_names: str or list
+        Pre-defined regions(s) or name of shape file(s)
+
+    name: str or list (optional)
+        Name of the sub region(s) to be selected
+
+    merge: str (optional)
+        Name of the column to be merged together
+
+    column: str (optional)
+        Name of the new column if `merge` is set
+
+    Returns
+    -------
+    pd.GeoDataFrame
+        GeoDataFrame containg region information
+
+    Example
+    -------
+    To create 'Bundeslander' GeoDataFrame 
+
+        import xweights as xw
+
+        gdf = xw.get_region(states)
+
+    To create subregion 'Hamburg' GeoDataFrame
+
+        gdf = xw.get_region(states, name='02_Hamburg')
+
+    To create user-defined GeoDataFrame and merge all geometries to a single one
+
+        shpfile = 'Seewinkel.shp'
+
+        gdf = xw.get_region(shpfile, merge='VA')
+    """
     gdf = []
+    if isinstance(region_names, str): region_names = [region_names]
     for region in region_names:
         if os.path.isfile(region):
             if not column:

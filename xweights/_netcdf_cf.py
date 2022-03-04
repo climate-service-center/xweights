@@ -2,6 +2,21 @@ from ._domains import get_domain
 
 
 def adjust_vertices(ds, domain_name=None):
+    """Set correct lon and lat vertices to xr.Dataset
+
+    Parameters
+    ----------
+    ds: xr.Dataset
+
+    domain_name: str (optional)
+        If `ds` does not contain lon and lat vertices take them from CORDEX domain dataset
+
+    Returns
+    -------
+    xr.Dataset
+        Dataset containing correct lon and lat vertices
+
+    """
 
     def roll_vertices(bounds):
         return bounds.roll(vertices=-1)
