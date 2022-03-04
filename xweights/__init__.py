@@ -13,7 +13,8 @@ from ._tabulator import (concat_dataframe,
 from ._weightings import spatial_averager
                     
 import nc_time_axis  
-from ._io import Input
+from ._io import (Input,
+                  adjust_name)
 
 from .xweights import (compute_weighted_means_ds,
                        compute_weighted_means)
