@@ -16,10 +16,10 @@ xweights
 
 
 
-Python "xweights" contains all the functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io/en/latest/
+Python "xweights" contains all the functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io
 
 * Free software: MIT license
-* Documentation: https://xweights.readthedocs.io/en/latest/?version=latest
+* Documentation: https://xweights.readthedocs.io
 
 
 Features
@@ -30,11 +30,6 @@ Features
 * As input you can choose between files on disk and intake-esm catalogues. Xarray dataset input is under development.
 
 * Use all these features as an command-line tool too
-
-Usage
------
-
-Please have a look on the notebooks an the documentation https://xweights.readthedocs.io/en/latest/?version=latest
 
 
 Installation

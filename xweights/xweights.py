@@ -6,7 +6,7 @@ from ._netcdf_cf import adjust_vertices
 from ._tabulator import (concat_dataframe,
                          write_to_csv)
 from ._weightings import spatial_averager
-
+from ._io import get_variable_name
 import warnings
 import pandas as pd
 import geopandas as gp
@@ -85,8 +85,11 @@ def compute_weighted_means_ds(ds,
     ds = adjust_vertices(ds, domain_name=domain_name)
     
     if not ds: return
-
-    variables = ds.vars
+    
+    if not hasattr(ds, 'vars'):
+        variables = get_variable_name(ds)
+    else:
+        variables = ds.vars
 
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))

@@ -9,9 +9,9 @@ from ._parser import args
 from ._regions import (which_regions,
                        which_subregions)
 
+
 def main():
     """Console script for xweights."""
-
     if args.which_regions:
         print(which_regions())
         return
