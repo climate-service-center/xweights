@@ -1,5 +1,5 @@
-Welcome to Grid weighted means's documentation!
-======================================
+Welcome to xweights' documentation!
+===================================
 
 .. toctree::
    :maxdepth: 2
@@ -8,7 +8,6 @@ Welcome to Grid weighted means's documentation!
    readme
    installation
    usage
-   modules
    contributing
    authors
    history
