@@ -7,6 +7,8 @@ Welcome to xweights' documentation!
 
    readme
    installation
+   usage
+   examples
    contributing
    authors
    api
