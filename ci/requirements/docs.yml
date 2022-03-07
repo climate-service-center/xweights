@@ -19,6 +19,7 @@ dependencies:
   - ipython
   - xesmf
   - py-cordex
+  - nc-time-axis
   - cftime
 # 
   - pip:
