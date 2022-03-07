@@ -31,7 +31,29 @@ import xweights
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinxcontrib.mockautodoc",
+    "numpydoc",
+    "nbsphinx",
+    "nbsphinx_link",
+    "IPython.sphinxext.ipython_console_highlighting",
+]
+
+autodoc_mock_imports = ["cartopy", "xesmf", "geopandas", "matplotlib"]
+
+autosummary_generate = True
+
+napoleon_use_param = True
+napoleon_use_rtype = False
+
+numpydoc_class_members_toctree = True
+numpydoc_show_class_members = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,7 +91,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store',  '**.ipynb_checkpoints']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -159,6 +181,10 @@ texinfo_documents = [
      'One line description of project.',
      'Miscellaneous'),
 ]
+
+# If true, the current module name will be prepended to all description
+# unit titles (such as .. function::).
+add_module_names = False
 
 
 

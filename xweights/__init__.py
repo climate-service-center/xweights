@@ -2,7 +2,8 @@
 
 from . import _regions as regions
 from ._regions import (get_region,
-                       which_regions)
+                       which_regions,
+                       which_subregions)
 
 from ._domains import (get_domain,
                        which_domains)

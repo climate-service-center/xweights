@@ -18,7 +18,7 @@ def which_domains():
 
     Returns
     -------
-    list
+    List - list
         List of CORDEX domains 
     
     """
@@ -35,7 +35,7 @@ def get_domain(domain):
 
     Returns
     -------
-    xr.Dataset
+    Dataset : xr.Dataset
         Dataset containing the coordinates
 
     Example

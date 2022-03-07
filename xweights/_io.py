@@ -111,7 +111,7 @@ class Input:
 
     Example
     -------
-       To create a xarray dataset dictionary from intake-esm catalogue file using some extra filter options
+       To create a xarray dataset dictionary from intake-esm catalogue file using some extra filter options::
 
            import xweights as xw
 
@@ -119,7 +119,7 @@ class Input:
 
            dataset_dict = xw.Input(catfile, variable_id=tas, experiment_id=rcp85, table_id=mon)
        
-       To create a xarray dataset dictionary from netCDF file on disk
+       To create a xarray dataset dictionary from netCDF file on disk::
 
            import xweights as xw
 

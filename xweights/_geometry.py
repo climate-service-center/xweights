@@ -62,7 +62,7 @@ def merge_entries(gdf, column):
         name = 'all'
 
     if column == 'all':
-        dic = {'name' + [name]}
+        dic = {'name' : [name]}
         polygeometry = get_polygeometry(gdf)
     else:
         dic = {'name' : getattr(gdf, column).unique()}

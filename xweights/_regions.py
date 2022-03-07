@@ -75,18 +75,18 @@ class Regions:
 
 
 def _region_dict(func, reg):
-    return {name : func(name) for name in reg if hasattr(Regions, name)}
+    return {name : func(name) for name in reg if hasattr(Regions(), name)}
 
 def which_regions():
     """Dictionary containing names of all pre-defined regions
 
     Returns
     -------
-    dict
-        Dictionary containing names of all pre-defined regions
+    Dicitonary : dict
+        Dictionary containing names of all pre-defined regions and their short description
     """
     regions = Regions().regions
-    func = regions.get_description
+    func = Regions().get_description
     return _region_dict(func, regions)
 
 def which_subregions(region):
@@ -99,8 +99,17 @@ def which_subregions(region):
 
     Returns
     -------
-    dict
+    Dictionary : dict
         Dictionary containing names of all subgregions of one pre-defined region
+
+    Example
+    -------
+
+    To get names of all 'Bundesländer'::
+
+        import xweights as xw
+
+        subregions = xw.which_subregions('states')
     """
     if isinstance(region, str): region = [region]
     region = [r.lower() for r in region]
@@ -126,22 +135,22 @@ def get_region(region_names, name=None, merge=None, column=None):
 
     Returns
     -------
-    pd.GeoDataFrame
-        GeoDataFrame containg region information
+    GeoDataFrame : pd.GeoDataFrame
+        GeoDataFrame containing region information
 
     Example
     -------
-    To create 'Bundeslander' GeoDataFrame 
+    To create 'Bundeslander' GeoDataFrame:: 
 
         import xweights as xw
 
         gdf = xw.get_region(states)
 
-    To create subregion 'Hamburg' GeoDataFrame
+    To create subregion 'Hamburg' GeoDataFrame::
 
         gdf = xw.get_region(states, name='02_Hamburg')
 
-    To create user-defined GeoDataFrame and merge all geometries to a single one
+    To create user-defined GeoDataFrame and merge all geometries to a single one::
 
         shpfile = 'Seewinkel.shp'
 

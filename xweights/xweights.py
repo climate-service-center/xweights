@@ -40,22 +40,22 @@ def compute_weighted_means_ds(ds,
         Name of the dataset will be written to the pd.DataFrame as an extra column
 
     domain_name: str (optional)
-        Name of the CORDEX_domain. This is only needed if `ds` does not have lon and lat vertices
+        Name of the CORDEX_domain. This is only needed if ``ds`` does not have longitude and latitude vertices
 
     time_range: list (optional)
-        List containing start and end date to select from `ds`
+        List containing start and end date to select from ``ds``
         
     column_names: list (optional)
-        Extra column names of the pd.DataFrame; the information is read from global attributes of `ds`
+        Extra column names of the pd.DataFrame; the information is read from global attributes of ``ds``
 
     subregion: str or list (optional)
-        Name of the subregion(s) to be selected from `shp`
+        Name of the subregion(s) to be selected from ``shp``
 
-    merge_columns: str (optional)
-        Name of the column to be merged together
+    merge_columns: str or list (optional)
+        Name of the column to be merged together. Set ['all', 'newname'] to merge all geometries and set new column name to 'newname'. 
 
     column_merge: str (optional)
-        Name of the new column if `merge_columns` is set
+        Column name to differentiate shapefile while merging.
 
     ds_output: pd.DataFrame (optional)
         pd.DataFrame to be concatenated with the newly created pd.DataFrame
@@ -64,14 +64,51 @@ def compute_weighted_means_ds(ds,
         Name of the output directory path or file
 
     land_only: bool (optional)
-        Consider only land points
-        !!!This is NOT implemented yet!!!
-        As workaround write land sea mask in `ds`['mask']. xesmf's spatial averager automatically considers `ds`['mask'] 
+        Consider only land points\n
+        !!!This is NOT implemented yet!!!\n
+        As workaround write land sea mask in ``ds['mask']``. xesmf's spatial averager automatically considers ``ds['mask']``. 
 
     time_stat: str or list (optional)
-       Do some time statistics on `ds`
+       Do some time statistics on ``ds``\n
        !!!This is NOT implemented yet!!!
 
+    Returns
+    -------
+    DataFrame : pd.DataFrame 
+        pandas Dataframe containing time series of spatial averages.
+
+
+    Example
+    -------
+
+    To calculate time series of spatial averages for several 'Bundeländer':\n
+        - select Schleswig-Holstein, Hamburg, Bremen and Lower Saxony\n
+        - Merge those regions to one new region calles NortSeaCoast\n
+        - Select time slice from 2007 to 2009\n
+        - Set CORDEX specific result DataFrame column names\n
+    ::
+
+        import xarray as xr
+        import xweights as xw
+
+        path = '/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/tas/v20171121/'
+        netcdffile = path + 'tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc'
+
+        ds = xr.open_dataset(netcdffile)
+        df = xw.compute_weighted_means_ds(ds, 'states',
+                                          subregions=['01_Schleswig-Holstein,
+                                                      '02_Hamburg', 
+                                                      '03_Niedersachsen', 
+                                                      '04_Bremen'],
+                                          merge_column=['all', 'NorthSeaCoast'],
+                                          time_range=['2007-01-01','2009-12-31'],
+                                          column_names=['institute_id', 
+                                                        'driving_model_id', 
+                                                        'experiment_id', 
+                                                        'driving_model_ensemlbe_member', 
+                                                        'model_id',
+                                                        'rcm_version_id'],
+                                          )
     """
 
     if land_only:
@@ -144,10 +181,10 @@ def compute_weighted_means(input,
        Name of the shapefile or pre-defined region containing the information needed for xesmf's spatial averaging
 
     subregion: str or list (optional)
-        Name of the subregion(s) to be selected from `region`
+        Name of the subregion(s) to be selected from ``region``
 
     domain_name: str (optional)
-        Name of the CORDEX_domain. This is only needed if `ds` does not have lon and lat vertices
+        Name of the CORDEX_domain. This is only needed if ``ds`` does not have longitude and latitude vertices
 
     time_range: list (optional)
         List containing start and end date to be select
@@ -155,23 +192,59 @@ def compute_weighted_means(input,
     column_names: list (optional)
         Extra column names of the pd.DataFrame; the information is read from global attributes
 
-    merge_columns: str (optional)
-        Name of the column to be merged together
+    merge_columns: str or list (optional)
+        Name of the column to be merged together. Set ['all', 'newname'] to merge all geometries and set new column name to 'newname'.
 
     column_merge: str (optional)
-        Name of the new column if `merge_columns` is set
+        Column name to differentiate shapefile while merging.
 
     outdir: str (optional)
         Name of the output directory path or file
 
     land_only: bool (optional)
-        Consider only land points
-        !!!This is NOT implemented yet!!!
-        As workaround write land sea mask in `ds`['mask']. xesmf's spatial averager automatically considers `ds`['mask'] 
+        Consider only land points\n
+        !!!This is NOT implemented yet!!!\n
+        As workaround write land sea mask in ``ds['mask']``. xesmf's spatial averager automatically considers ``ds['mask']``. 
 
     time_stat: str or list (optional)
-       Do some time statistics on `ds`
+       Do some time statistics on ``ds``\n
        !!!This is NOT implemented yet!!!
+
+    Returns
+    -------
+    DataFrame : pd.DataFrame 
+        pandas Dataframe containing time series of spatial averages.
+
+    Example
+    -------
+
+    To calculate time series of spatial averages for several 'Bundeländer':\n
+        - select Schleswig-Holstein, Hamburg, Bremen and Lower Saxony\n
+        - Merge those regions to one new region calles NortSeaCoast\n
+        - Select time slice from 2007 to 2009\n
+        - Set CORDEX specific result DataFrame column names\n
+    ::
+
+        import xweights as xw
+
+        path = '/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/tas/v20171121/'
+        netcdffile = path + 'tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc'
+
+        df = xw.compute_weighted_means_ds(netcdffile, 'states',
+                                          subregions=['01_Schleswig-Holstein,
+                                                      '02_Hamburg', 
+                                                      '03_Niedersachsen', 
+                                                      '04_Bremen'],
+                                          merge_column=['all', 'NorthSeaCoast'],
+                                          time_range=['2007-01-01','2009-12-31'],
+                                          column_names=['institute_id', 
+                                                        'driving_model_id', 
+                                                        'experiment_id', 
+                                                        'driving_model_ensemlbe_member', 
+                                                        'model_id',
+                                                        'rcm_version_id'],
+                                          )
+    
 
     """
 
