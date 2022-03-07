@@ -21,6 +21,9 @@ dependencies:
   - py-cordex
   - nc-time-axis
   - cftime
+  - intake-esm
+  - dask
+  - geopandas
 # 
   - pip:
 #    - intake_geopandas>=0.2.4
