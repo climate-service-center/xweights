@@ -17,9 +17,9 @@ with open('xweights/__init__.py') as init_file:
             __version__ = line.split('=')[-1]
             break
     
-requirements = open("requirements.txt").read().strip().split("\n")
+requirements = open("ci/requirements/requirements.txt").read().strip().split("\n")
 
-setup_requirements = open("requirements_dev.txt").read().strip().split("\n")
+setup_requirements = open("ci/requirements/requirements_dev.txt").read().strip().split("\n")
 
 test_requirements = [ ]
 
