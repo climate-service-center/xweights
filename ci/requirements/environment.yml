@@ -1,20 +1,20 @@
 name: xweights-tests
 channels:
-	- conda-forge
-	- nodefaults
+    - conda-forge
+    - nodefaults
 dependencies:
-	- dask
-	- geopandas
-	- intake-esm
-	- xarray
-	- py-cordex
-	- xesmf
-	- numpy
-	- setuptools
-	- pooch
-	- netCDF4
-	# for testing
-	- pytets
-	- pytest-cov
-	- pytest-env
+    - dask
+    - geopandas
+    - intake-esm
+    - xarray
+    - py-cordex
+    - xesmf
+    - numpy
+    - setuptools
+    - pooch
+    - netCDF4
+    # for testing
+    - pytets
+    - pytest-cov
+    - pytest-env
 	
