@@ -2,18 +2,15 @@
 xweights
 ========
 
-.. image:: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yaml/badge.svg
-    :target: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yaml
+.. image:: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml
     
 .. image:: https://codecov.io/gh/ludwiglierhammer/xweights/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/ludwiglierhammer/xweights
-  
-.. image:: https://anaconda.org/conda-forge/xweights/badges/installer/conda.svg
-    :target: https://anaconda.org/conda-forge/xweights
+    :target: https://codecov.io/gh/ludwiglierhammer/xweights
     
 .. image:: https://readthedocs.org/projects/xweights/badge/?version=latest
-        :target: https://xweights.readthedocs.io/en/latest/?version=latest
-        :alt: Documentation Status  
+    :target: https://xweights.readthedocs.io/en/latest/?version=latest
+    :alt: Documentation Status  
         
 .. image:: https://pyup.io/repos/github/ludwiglierhammer/xweights/shield.svg
     :target: https://pyup.io/repos/github/ludwiglierhammer/xweights/
