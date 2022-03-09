@@ -2,6 +2,8 @@ from pathlib import Path
 
 data_path = Path(__file__).parent 
 
-netcdf = list((data_path / "data/netcdf").glob('*'))
+nclist = list((data_path / "data/netcdf").glob('*').as_posix())
+netcdf = [nc.as_posix() for nc in nclist]
 
-shp = list((data_path / "data/shp").glob('*.shp'))
+shplist = list((data_path / "data/shp").glob('*.shp'))
+shp = [sh.as_posix() for sh in shplist]
