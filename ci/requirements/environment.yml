@@ -14,6 +14,6 @@ dependencies:
     - pooch
     - netCDF4
     # for testing
-    - pytets
+    - pytest
     - pytest-cov
     - pytest-env
