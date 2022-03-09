@@ -17,4 +17,3 @@ dependencies:
     - pytets
     - pytest-cov
     - pytest-env
-	
