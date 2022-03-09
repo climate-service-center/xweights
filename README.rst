@@ -49,7 +49,12 @@ If you want to contribute, I recommend cloning the repository and installing the
     cd xweights
     pip install -e .
 
+In additon you have to install xESMF using _Conda:
 
+.. code-block:: console
+		
+    conda install -c conda-forge xesmf
+    
 This will install the package but you can still edit it and you don't need the package in your :code:`PYTHONPATH`
 
 
@@ -87,3 +92,4 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. _Conda: https://docs.conda.io/
