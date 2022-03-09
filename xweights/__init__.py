@@ -19,6 +19,9 @@ from ._io import (Input,
 from .xweights import (compute_weighted_means_ds,
                        compute_weighted_means)
 
+from .data import netcdf as test_netcdf
+from .data import shp as test_shp
+
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 

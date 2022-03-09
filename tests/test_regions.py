@@ -24,5 +24,5 @@ def test_get_region():
     assert xw.get_region('prudence')
 
 def test_get_user_region():
-    shpfile='../../tests/data/shp/Seewinkel.shp'
+    shpfile=xw.test_shp[0]
     assert xw.get_region(shpfile, merge='VA')
