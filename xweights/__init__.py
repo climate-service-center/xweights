@@ -14,7 +14,7 @@ from ._tabulator import (concat_dataframe,
 from ._weightings import spatial_averager
                     
 from ._io import (Input,
-                  adjust-R _name)
+                  adjust_name)
 
 from .xweights import (compute_weighted_means_ds,
                        compute_weighted_means)
