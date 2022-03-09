@@ -2,19 +2,22 @@
 xweights
 ========
 
-
-.. image:: https://img.shields.io/pypi/v/xweights.svg
-        :target: https://pypi.python.org/pypi/xweights
-
-.. image:: https://img.shields.io/travis/ludwiglierhammer/xweights.svg
-        :target: https://travis-ci.com/ludwiglierhammer/xweights
-
+.. image:: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yaml/badge.svg
+    :target: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yaml
+    
+.. image:: https://codecov.io/gh/ludwiglierhammer/xweights/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/ludwiglierhammer/xweights
+  
+.. image:: https://anaconda.org/conda-forge/xweights/badges/installer/conda.svg
+    :target: https://anaconda.org/conda-forge/xweights
+    
 .. image:: https://readthedocs.org/projects/xweights/badge/?version=latest
-        :target: https://xweights.readthedocs.io/en/latest/?version=latest
-        :alt: Documentation Status
-
-
-
+        :target: https://xweights.readthedocs.io/en/latest/?version=latest
+        :alt: Documentation Status  
+        
+.. image:: https://pyup.io/repos/github/ludwiglierhammer/xweights/shield.svg
+    :target: https://pyup.io/repos/github/ludwiglierhammer/xweights/
+    :alt: Updates   
 
 Python "xweights" contains all the functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io
 
