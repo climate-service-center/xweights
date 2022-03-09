@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0 # Fetch all history for all branches and tags.
       - name: Set environment variables
         run: |
-          echo "CONDA_ENV_FILE=ci/requirements/environments.yml" >> $GITHUB_ENV
+          echo "CONDA_ENV_FILE=ci/requirements/requirements.yml" >> $GITHUB_ENV
           echo "PYTHON_VERSION=${{ matrix.python-version }}" >> $GITHUB_ENV
       - name: Cache conda
         uses: actions/cache@v2
