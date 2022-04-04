@@ -5,7 +5,7 @@ xweights
 .. image:: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml/badge.svg
     :target: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml
     
-.. image:: https://codecov.io/gh/ludwiglierhammer/xweights/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/ludwiglierhammer/xweights/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/ludwiglierhammer/xweights
     
 .. image:: https://readthedocs.org/projects/xweights/badge/?version=latest
