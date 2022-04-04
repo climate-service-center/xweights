@@ -33,7 +33,14 @@ def spatial_averager(ds, shp):
 
     """
     savg = xe.SpatialAverager(ds, shp.geometry)
+    nnz = [w.data.nnz for w in savg.weights]
+    
     out = savg(ds)
     out = out.assign_coords(field_region=xr.DataArray(shp["name"], 
-                                                      dims=("geom",)))     
+                                                      dims=("geom",)))
+    out = out.assign_coords(nnz=xr.DataArray(nnz,
+                                             dims=("geom",)))
+    out = out.assign_coords(geometry=xr.DataArray(shp.geometry,
+                                                  dims=("geom",)))
+
     return out

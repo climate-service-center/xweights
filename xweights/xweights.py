@@ -6,7 +6,7 @@ from ._netcdf_cf import adjust_vertices
 from ._tabulator import (concat_dataframe,
                          write_to_csv)
 from ._weightings import spatial_averager
-from ._io import get_variable_name
+
 import warnings
 import pandas as pd
 import geopandas as gp
@@ -123,16 +123,10 @@ def compute_weighted_means_ds(ds,
     
     if not ds: return
     
-    if not hasattr(ds, 'vars'):
-        variables = get_variable_name(ds)
-    else:
-        variables = ds.vars
-
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 
     column_dict = {column:ds.attrs[column] if hasattr(ds, column) else None for column in column_names}
-
 
     if not isinstance(shp, gp.GeoDataFrame):
         shp = get_region(shp,
@@ -141,6 +135,8 @@ def compute_weighted_means_ds(ds,
                          column=column_merge)
 
     out = spatial_averager(ds, shp)
+    drop = [i for i in out.coords if not out[i].dims]
+    out = out.drop(labels=drop)
 
     if time_stat:
         """
@@ -148,8 +144,11 @@ def compute_weighted_means_ds(ds,
         """
         NotImplementedError  
 
-    df_output = concat_dataframe(df_output, out, variables, index=out.time, column_dict=column_dict, name=ds_name)
-
+    df_output = concat_dataframe(df_output,
+                                 out,
+                                 column_dict=column_dict,
+                                 name=ds_name)
+    
     if output:
         write_to_csv(df_output, output)
 

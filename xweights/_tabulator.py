@@ -1,53 +1,40 @@
 import pandas as pd
 import os
 
+from ._io import get_variable_name
+
 def write_to_pandas(da, 
-                    columns, 
-                    index, 
                     column_dict={}, 
-                    name='name', 
-                    var='var'):
+                    name='name'):
     """Write xr.DataArray to pd.DataFrame
 
     Parameters
     ----------
     da: xr.DaraArray
         
-    columns: list
-        List of xr.DataArray's coordinates which to set as pd.DataFrame columns
-
-    index: xr.DataArray
-       xr.DataArray containing the pd.DataFrame index information; e.g. da.time
-    
     column_dict:  dict (optional)
         Dictionary containing new pd.DataFrame column names and corresponding values
 
     name: str (optional)
         Name of the pd.DataFrame rows; e.g. name of the xr.DataArray
 
-    var: str (optional)
-        Name of the xr.DataArray's CF variables
-
     Returns
     -------
     pd.DataFrame
     """
-
-    df_output = pd.DataFrame(da, columns=columns,dtype=float)
-    df_output[index.name] = index.values
-    df_output['variable'] = [var]*len(index)
+    df_output = da.to_dataframe()
+    length = len(df_output)
     for key, value in column_dict.items():
-        df_output[key] = [value]*len(index)
-    df_output['name'] = [name]*len(index)
-    return df_output.set_index(index.name)
+        df_output[key] = [value]*length
+    df_output['name'] = [name]*length
+    return df_output
 
 def concat_dataframe(dataframe, 
                      ds, 
-                     variables,
-                     index,
+                     variables=None,
                      **kwargs):
 
-    """Concatenate newly created Pd.DataFrame to already existing pd.DataFrame
+    """Concatenate newly created pd.DataFrame to already existing pd.DataFrame
 
     Parameters
     ----------
@@ -56,13 +43,9 @@ def concat_dataframe(dataframe,
      
     ds: xr.DataSet
 
-    variables: str or list
+    variables: str or list, default: `ds.vars`
         Names(s) of the xr.Dataset variables to be written to the pd.DataFrame
     
-    index: xr.DataArray
-        xr.DataArray containing the pd.DataFrame index information; e.g. da.time
-
-
     kwargs:
         Opional parameters transferred to function `write_to_pandas`
         column_dict
@@ -73,12 +56,11 @@ def concat_dataframe(dataframe,
     -------
     pd.DataFrame
     """
+    if variables is None: variables = get_variable_name(ds)
     if isinstance(variables, str): variables = [variables]
     for var in variables:
         dataframe = pd.concat([dataframe,
                                write_to_pandas(ds[var],
-                                               ds.field_region.values,
-                                               index,
                                                **kwargs)
                                ])
     return dataframe
