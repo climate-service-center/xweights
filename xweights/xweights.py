@@ -10,6 +10,7 @@ from ._weightings import spatial_averager
 import warnings
 import pandas as pd
 import geopandas as gp
+import xarray as xr
 
 def compute_weighted_means_ds(ds,
                               shp,
@@ -120,9 +121,9 @@ def compute_weighted_means_ds(ds,
             NotImplementedError
 
     ds = adjust_vertices(ds, domain_name=domain_name)
-    
-    if not ds: return
-    
+
+    if not isinstance(ds, xr.Dataset): return
+
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 

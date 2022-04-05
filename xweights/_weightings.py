@@ -40,7 +40,5 @@ def spatial_averager(ds, shp):
                                                       dims=("geom",)))
     out = out.assign_coords(nnz=xr.DataArray(nnz,
                                              dims=("geom",)))
-    out = out.assign_coords(geometry=xr.DataArray(shp.geometry,
-                                                  dims=("geom",)))
 
     return out
