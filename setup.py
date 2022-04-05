@@ -19,6 +19,20 @@ with open('xweights/__init__.py') as init_file:
     
 requirements = open("ci/requirements/requirements.txt").read().strip().split("\n")
 
+#requirements = [
+#    'numpy>=1.21.2',
+#    'dask>=2021.9.1',
+#    'geopandas>=0.10.0',
+#    'intake-esm>=2021.8.17',
+#    'nc-time-axis>=1.3.1',
+#    'numpy>=1.21.2',
+#    'pandas>=1.3.3',
+#    'xarray>=0.19.0',
+#    'py-cordex>=0.3.1',
+#    'xesmf @ git+https://github.com/pangeo-data/xesmf'
+#   ]
+
+
 setup_requirements = open("ci/requirements/requirements_dev.txt").read().strip().split("\n")
 
 test_requirements = [ ]
