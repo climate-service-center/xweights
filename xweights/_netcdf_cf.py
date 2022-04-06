@@ -49,18 +49,16 @@ def adjust_vertices(ds, domain_name=None):
                     return
                 domain = get_domain(domain_name)
                 bounds = correct_bounds(domain, coord_name)
-
                 try:
                     ds[bounds.name] = bounds
+                    ds[bounds.name].values = bounds.values
                     ds[coord[0]].attrs['bounds'] = bounds.name
                 except:
                     warnings.warn('Input grid file does not match example domain dataset grid.')
                     return
-
         return ds
 
     ds_c = ds.copy()
-
     ds_c = adjust_lat_lon_vertices(ds_c, coord_name='longitude', domain_name=domain_name)
     ds_c = adjust_lat_lon_vertices(ds_c, coord_name='latitude', domain_name=domain_name)
 
