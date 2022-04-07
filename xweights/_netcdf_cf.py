@@ -50,9 +50,12 @@ def adjust_vertices(ds, domain_name=None):
                 domain = get_domain(domain_name)
                 bounds = correct_bounds(domain, coord_name)
                 try:
+                    ndims_o=len(ds.dims)
                     ds[bounds.name] = bounds
                     ds[bounds.name].values = bounds.values
                     ds[coord[0]].attrs['bounds'] = bounds.name
+                    ndims_n=len(ds.dims)
+                    if ndims_o != ndims_n: error_exit
                 except:
                     warnings.warn('Input grid file does not match example domain dataset grid.')
                     return
