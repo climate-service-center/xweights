@@ -122,7 +122,7 @@ def compute_weighted_means_ds(ds,
 
     ds = adjust_vertices(ds, domain_name=domain_name)
 
-    if not isinstance(ds, xr.Dataset): return
+    if not isinstance(ds, xr.Dataset): return df_output
 
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
