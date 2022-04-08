@@ -1,7 +1,28 @@
+from ._domains import get_domain
+
 import xesmf as xe
 import xarray as xr
 
-def spatial_averager(ds, shp):
+
+def get_spatial_averager(ds, geometry):
+    """get xesmf's spatail averager
+    
+    Parameters
+    ----------
+    ds: xr.Dataset or str
+        Dataset or name of CORDEX_domain
+    geometry: 
+        dsgds
+
+    Returns
+    -------
+    savg - xesmf.SpatialAverager
+    """
+    if isinstance(ds, str):
+        ds = get_domain(ds)
+    return xe.SpatialAverager(ds, geometry)
+    
+def spatial_averager(ds, shp, savg=None):
     """xesmf's spatial averager
 
     Parameters
@@ -9,6 +30,8 @@ def spatial_averager(ds, shp):
     ds: xr.Dataset
 
     shp: gp.GeoDataFrame
+
+    savg: xesmf.SpatialAverager (optional)
 
     Returns
     -------
@@ -32,7 +55,10 @@ def spatial_averager(ds, shp):
         out = xw.spatial_averager(ds, shp)
 
     """
-    savg = xe.SpatialAverager(ds, shp.geometry)
+    if savg is None or isinstance(savg, str):
+        print(savg)
+        savg = get_spatial_averager(savg, shp.geometry)
+
     nnz = [w.data.nnz for w in savg.weights]
     
     out = savg(ds)

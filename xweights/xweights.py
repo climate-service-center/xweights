@@ -1,26 +1,25 @@
-from ._io import (Input,
-                  adjust_name)
-  
+#from ._io import (Input,
+#                  adjust_name)
+from ._io import Input
 from ._regions import get_region
-from ._netcdf_cf import adjust_vertices
+#from ._netcdf_cf import adjust_vertices
 from ._tabulator import (concat_dataframe,
                          write_to_csv)
-from ._weightings import spatial_averager
+from ._weightings import (get_spatial_averager,
+                          spatial_averager)
 
 import warnings
 import pandas as pd
 import geopandas as gp
 import xarray as xr
+import copy
 
 def compute_weighted_means_ds(ds,
                               shp,
                               ds_name='dataset',
-                              domain_name=None,
                               time_range=None,
                               column_names=[],
-                              subregion=None,
-                              merge_columns=False,
-                              column_merge=False,
+                              averager=False,
                               df_output=pd.DataFrame(),
                               output=None,
                               land_only=False,
@@ -34,14 +33,11 @@ def compute_weighted_means_ds(ds,
     ----------
     ds: xr.DataSet
 
-    shp: str or gp.GeoDataFrame
-       Name of the shapefile, pre-defined region or gp.GeoDataFrame containing the information needed for xesmf's spatial averaging
+    shp: gp.GeoDataFrame
+       gp.GeoDataFrame containing the information needed for xesmf's spatial averaging
 
     ds_name: str (optional)
         Name of the dataset will be written to the pd.DataFrame as an extra column
-
-    domain_name: str (optional)
-        Name of the CORDEX_domain. This is only needed if ``ds`` does not have longitude and latitude vertices
 
     time_range: list (optional)
         List containing start and end date to select from ``ds``
@@ -49,16 +45,10 @@ def compute_weighted_means_ds(ds,
     column_names: list (optional)
         Extra column names of the pd.DataFrame; the information is read from global attributes of ``ds``
 
-    subregion: str or list (optional)
-        Name of the subregion(s) to be selected from ``shp``
-
-    merge_columns: str or list (optional)
-        Name of the column to be merged together. Set ['all', 'newname'] to merge all geometries and set new column name to 'newname'. 
-
-    column_merge: str (optional)
-        Column name to differentiate shapefile while merging.
-
-    ds_output: pd.DataFrame (optional)
+    averager: str, xesmf.SpatialAverager (optional)
+        Use CORDEX domain name to calculate a xesmf.SpatialAverager object or use user-given one.
+   
+    df_output: pd.DataFrame (optional)
         pd.DataFrame to be concatenated with the newly created pd.DataFrame
 
     output: str (optional)
@@ -120,7 +110,6 @@ def compute_weighted_means_ds(ds,
             """
             NotImplementedError
 
-    ds = adjust_vertices(ds, domain_name=domain_name)
 
     if not isinstance(ds, xr.Dataset): return df_output
 
@@ -128,14 +117,10 @@ def compute_weighted_means_ds(ds,
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 
     column_dict = {column:ds.attrs[column] if hasattr(ds, column) else None for column in column_names}
-
-    if not isinstance(shp, gp.GeoDataFrame):
-        shp = get_region(shp,
-                         name=subregion,
-                         merge=merge_columns,
-                         column=column_merge)
-
-    out = spatial_averager(ds, shp)
+    try:
+        out = spatial_averager(ds, shp, savg=averager)
+    except:
+        return df_output
     drop = [i for i in out.coords if not out[i].dims]
     out = out.drop(labels=drop)
 
@@ -156,9 +141,11 @@ def compute_weighted_means_ds(ds,
     return df_output
 
 def compute_weighted_means(input,
-                           region,
+                           region=None,
                            subregion=None,
+                           shp=None,
                            domain_name=None,
+                           averager=False,
                            time_range=None,
                            column_names=[],
                            merge_columns=False,
@@ -177,14 +164,21 @@ def compute_weighted_means(input,
     input: str or list
          Valid input files are netCDF file(s), directories containing those files and intake-esm catalogue files
 
-    region: str
+    region: str (optional)
        Name of the shapefile or pre-defined region containing the information needed for xesmf's spatial averaging
 
     subregion: str or list (optional)
         Name of the subregion(s) to be selected from ``region``
 
+    shp: gp.GeoDataFrame (optional)
+        gp.GeoDataFrame containing the information needed for xesmf's spatial averaging
+
     domain_name: str (optional)
         Name of the CORDEX_domain. This is only needed if ``ds`` does not have longitude and latitude vertices
+    averager: bool or xesmf.SpatialAverager object (optional)
+        If True: Calculate one xesmf.SpatialAverager to use for all ds'.
+        If False or None: Calculate a xesmf.SpatialAverager individually for each ds.
+        Else use user-given xesmf.SpatialAverager
 
     time_range: list (optional)
         List containing start and end date to be select
@@ -250,26 +244,34 @@ def compute_weighted_means(input,
 
     def _calc_time_statistics(ds, statistics):
         return ds
+    
 
+    if shp is None:
+        shp = get_region(region,
+                         name=subregion,
+                         merge=merge_columns,
+                         column=column_merge)
+
+    if averager is True:
+        averager = get_spatial_averager(domain_name, shp.geometry)
+    elif averager is False:
+        averager = domain_name
+    
     dataset_dict = Input(input, **kwargs).dataset_dict
 
-    region = get_region(region, name=subregion, merge=merge_columns, column=column_merge)
-
     df_output = pd.DataFrame()
-
+    
     for name, ds in dataset_dict.items():
 
         df_output = compute_weighted_means_ds(ds,
-                                              domain_name=domain_name,
+                                              shp,
+                                              ds_name=name,
                                               time_range=time_range,
                                               column_names=column_names,
-                                              shp=region, 
-                                              subregion=subregion, 
-                                              merge_columns=merge_columns, 
-                                              column_merge=column_merge,
-                                              land_only=land_only,
+                                              averager=averager,
                                               df_output=df_output,
-                                              ds_name=name,
+                                              land_only=land_only,
+                                              time_stat=time_stat,
                                               )
 
     if outdir:
