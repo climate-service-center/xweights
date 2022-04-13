@@ -7,11 +7,12 @@ from ._regions import (get_region,
 
 from ._domains import (get_domain,
                        which_domains)
-from ._netcdf_cf import adjust_vertices
+
 from ._tabulator import (concat_dataframe,
                          write_to_csv)
 
-from ._weightings import spatial_averager
+from ._weightings import (spatial_averager,
+                          get_spatial_averager)
                     
 from ._io import (Input,
                   adjust_name)
