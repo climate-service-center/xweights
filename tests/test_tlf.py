@@ -28,7 +28,7 @@ def test_compute_weighted_means_ds():
 def test_compute_weighted_means():
     netcdffile = xw.test_netcdf[0]
     df = xw.compute_weighted_means(netcdffile,
-                                   region='states'
+                                   region='states',
                                    subregion=['01_Schleswig-Holstein',
                                               '02_Hamburg',
                                               '03_Niedersachsen',
