@@ -17,7 +17,6 @@ def _importskip(modname):
 has_dask, requires_dask = _importskip("dask")
 has_geopandas, requires_geopandas = _importskip("geopandas")
 has_intake, requires_intake = _importskip("intake")
-#has_nc-time-axis, requires_nc-time-axis = _importskip("nc-time-axis")
 has_numpy, requires_numpy = _importskip("numpy")
 has_xarray, requires_xarray = _importskip("xarray")
 has_cordex, requires_cordex = _importskip("cordex")

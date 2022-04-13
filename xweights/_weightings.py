@@ -2,6 +2,7 @@ from ._domains import get_domain
 
 import xesmf as xe
 import xarray as xr
+import copy
 
 
 def get_spatial_averager(ds, geometry):
@@ -55,8 +56,9 @@ def spatial_averager(ds, shp, savg=None):
         out = xw.spatial_averager(ds, shp)
 
     """
-    if savg is None or isinstance(savg, str):
-        print(savg)
+    if savg is None:
+        savg = get_spatial_averager(ds, shp.geometry)
+    elif isinstance(savg, str):
         savg = get_spatial_averager(savg, shp.geometry)
 
     nnz = [w.data.nnz for w in savg.weights]

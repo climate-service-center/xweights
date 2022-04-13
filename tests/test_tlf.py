@@ -18,11 +18,6 @@ def test_compute_weighted_means_ds():
     ds = xr.open_dataset(netcdffile)
     df = xw.compute_weighted_means_ds(ds, shp, 
                                       time_range=['2007-01-01','2007-11-30'],
-                                      subregion=['01_Schleswig-Holstein',
-                                                 '02_Hamburg',
-                                                 '03_Niedersachsen',
-                                                 '04_Bremen'],
-                                      merge_columns=['all','NorthSeaCoast'],
                                       column_names=['institute_id',
                                                     'driving_model_id',
                                                     'experiment_id',
@@ -32,4 +27,10 @@ def test_compute_weighted_means_ds():
 
 def test_compute_weighted_means():
     netcdffile = xw.test_netcdf[0]
-    df = xw.compute_weighted_means(netcdffile, 'states')
+    df = xw.compute_weighted_means(netcdffile,
+                                   region='states'
+                                   subregion=['01_Schleswig-Holstein',
+                                              '02_Hamburg',
+                                              '03_Niedersachsen',
+                                              '04_Bremen'],
+                                   merge_columns=['all','NorthSeaCoast'],)
