@@ -32,7 +32,7 @@ def create_parser():
     parser.add_argument('-o', '--output_directory', dest='output_directory', nargs='?', type=str, help='Output directory or output file')
     parser.add_argument('-r', '--region', dest='region', nargs='+', type=str, help='Region for geometry weighting only. Choose between counties, states, prudence. Or give a shapefile.')
     parser.add_argument('-s', '--subregion', dest='subregion', nargs='+', type=str, help='Set names of the subregions')
-    parser.add_argument('-d', '--domain', dest='domain', nargs='+', default='EUR-11', help='Domain for geometry weighting only. Chosse one of the CORDEX_domains. Default is EUR-11.')
+    parser.add_argument('-d', '--domain', dest='domain', default='EUR-11', help='Domain for geometry weighting only. Chosse one of the CORDEX_domains. Default is EUR-11.')
     parser.add_argument('-trange', '--time_range', dest='time_range', nargs='+', help='Select time range from dataset. Use format %%yyyy[-%%mm[-%%dd]]')
     parser.add_argument('-csvcolumns', '--csv_column_names', dest='csv_column_names', nargs='+', default=[], help='Set the additional output csv column names read from the dataset global attributes.')
     parser.add_argument('-merge', '-merge_columns', dest='merge_columns', nargs='?', type=str, help='Column names of shapefile to merge together.')
@@ -48,5 +48,4 @@ parser = create_parser()
 args = parser.parse_args()
 
 if args.merge_columns: args.column_merge=args.merge_columns
-#if args.merge_name: args.merge=[args.merge , args.merge_name]
 
