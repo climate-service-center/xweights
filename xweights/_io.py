@@ -4,43 +4,7 @@ import warnings
 
 import dask
 import intake
-import xarray as xr
-
-
-def get_variable_name(ds):
-    """List of CF variables in xr.Dataset
-
-    Parameters
-    ----------
-    ds: xr.Dataset
-        xarray Dataset
-
-    Returns
-    -------
-    list
-        List of CF variables
-    """
-
-    def condition(ds, var):
-        return len(ds[var].coords) == len(ds.coords)
-
-    def most_coords(ds):
-        coords = 0
-        name = []
-        for var in ds.data_vars:
-            ncoords = len(ds[var].coords)
-            if ncoords > coords:
-                coords = ncoords
-                name += [var]
-        return name
-
-    try:
-        var_list = [var for var in ds.data_vars if condition(ds, var)]
-        if var_list:
-            return var_list
-        return most_coords(ds)
-    except Exception:
-        return [ds.name]
+from pyhomogenize import get_var_name, open_xrdataset
 
 
 def adjust_name(string):
@@ -167,49 +131,6 @@ class Input:
                 }
             )
 
-    def open_xrdataset(
-        self,
-        files,
-        use_cftime=True,
-        parallel=True,
-        data_vars="minimal",
-        chunks={"time": 1},
-        coords="minimal",
-        compat="override",
-        drop=None,
-        **kwargs
-    ):
-        """optimized function for opening large cf datasets.
-
-        based on
-        https://github.com/pydata/xarray/issues/1385#issuecomment-561920115
-
-        decode_timedelta=False is added to leave variables
-        and coordinates with time units in
-        {“days”, “hours”, “minutes”, “seconds”, “milliseconds”, “microseconds”}
-        encoded as numbers.
-
-        """
-
-        def drop_all_coords(ds):
-            return ds.reset_coords(drop=True)
-
-        ds = xr.open_mfdataset(
-            files,
-            parallel=parallel,
-            decode_times=False,
-            combine="by_coords",
-            preprocess=drop_all_coords,
-            decode_cf=False,
-            chunks=chunks,
-            data_vars=data_vars,
-            coords=coords,
-            compat=compat,
-            **kwargs
-        )
-
-        return xr.decode_cf(ds, use_cftime=use_cftime, decode_timedelta=False)
-
     def create_input_dictionary(self, input, **kwargs):
         """Function to create xarray dataset dictionary from input"""
 
@@ -231,14 +152,14 @@ class Input:
         def _get_input_dict(iname, ifiles, **kwargs):
             inputdict = {}
             try:
-                inputdict[iname] = self.open_xrdataset(ifiles, **kwargs)
+                inputdict[iname] = open_xrdataset(ifiles, **kwargs)
                 return inputdict
             except Exception:
                 pass
 
             for ifile in ifiles:
                 try:
-                    inputdict[ifile] = self.open_xrdataset(ifile, **kwargs)
+                    inputdict[ifile] = open_xrdataset(ifile, **kwargs)
                     continue
                 except Exception:
                     pass
@@ -275,7 +196,7 @@ class Input:
         if not inputdict:
             raise IndexError("Empty file dictionary")
         for name, ds in inputdict.items():
-            ds.attrs["vars"] = get_variable_name(ds)
+            ds.attrs["vars"] = get_var_name(ds)
             inputdict[name] = ds
         return {
             create_newname(
