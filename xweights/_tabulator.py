@@ -1,8 +1,7 @@
 import os
 
 import pandas as pd
-
-from ._io import get_variable_name
+from pyhomogenize import get_var_name
 
 
 def write_to_pandas(da, column_dict={}, name="name"):
@@ -56,7 +55,7 @@ def concat_dataframe(dataframe, ds, variables=None, **kwargs):
     pd.DataFrame
     """
     if variables is None:
-        variables = get_variable_name(ds)
+        variables = get_var_name(ds)
     if isinstance(variables, str):
         variables = [variables]
     for var in variables:
