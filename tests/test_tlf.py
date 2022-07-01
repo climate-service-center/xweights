@@ -26,7 +26,7 @@ def test_compute_weighted_means_ds():
     netcdffile = xw.test_netcdf[0]
     shp = xw.get_region("states")
     ds = xr.open_dataset(netcdffile)
-    assert xw.compute_weighted_means_ds(
+    xw.compute_weighted_means_ds(
         ds,
         shp,
         time_range=["2007-01-01", "2007-11-30"],
@@ -43,7 +43,7 @@ def test_compute_weighted_means_ds():
 
 def test_compute_weighted_means():
     netcdffile = xw.test_netcdf[0]
-    assert xw.compute_weighted_means(
+    xw.compute_weighted_means(
         netcdffile,
         region="states",
         subregion=[

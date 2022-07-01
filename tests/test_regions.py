@@ -19,15 +19,13 @@ def test_which_subregions():
 
 
 def test_get_region():
-    assert xw.get_region("states")
-    assert xw.get_region("states", name="02_Hamburg")
-    assert xw.get_region(
-        "states", name=["01_Schleswig-Holstein", "02_Hamburg"], merge="all"
-    )
-    assert xw.get_region("counties")
-    assert xw.get_region("prudence")
+    xw.get_region("states")
+    xw.get_region("states", name="02_Hamburg")
+    xw.get_region("states", name=["01_Schleswig-Holstein", "02_Hamburg"], merge="all")
+    xw.get_region("counties")
+    xw.get_region("prudence")
 
 
 def test_get_user_region():
     shpfile = xw.test_shp[0]
-    assert xw.get_region(shpfile, merge="VA", column="VA")
+    xw.get_region(shpfile, merge="VA", column="VA")
