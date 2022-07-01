@@ -15,25 +15,14 @@ with open('xweights/__init__.py') as init_file:
     for line in lines:
         if '__version__' in line:
             __version__ = line.split('=')[-1]
+            __version__ = __version__.replace('"','')
             break
-    
-requirements = open("ci/requirements/requirements.txt").read().strip().split("\n")
+def _read_txt(txt_file):
+    return open(txt_file).read().strip().split("\n")
 
-#requirements = [
-#    'numpy>=1.21.2',
-#    'dask>=2021.9.1',
-#    'geopandas>=0.10.0',
-#    'intake-esm>=2021.8.17',
-#    'nc-time-axis>=1.3.1',
-#    'numpy>=1.21.2',
-#    'pandas>=1.3.3',
-#    'xarray>=0.19.0',
-#    'py-cordex>=0.3.1',
-#    'xesmf @ git+https://github.com/pangeo-data/xesmf'
-#   ]
+requirements = _read_txt("ci/requirements/requirements.txt")
 
-
-setup_requirements = open("ci/requirements/requirements_dev.txt").read().strip().split("\n")
+setup_requirements = _read_txt("ci/requirements/requirements_dev.txt")
 
 test_requirements = [ ]
 
@@ -61,13 +50,13 @@ setup(
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='xweights',
-    name='xweights',
-    packages=find_packages(include=['xweights', 'xweights.*']),
+    keywords="xweights",
+    name="xweights",
+    packages=find_packages(include=["xweights", "xweights.*"]),
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    url='https://github.com/ludwiglierhammer/xweights',
+    url="https://github.com/ludwiglierhammer/xweights",
     version=__version__,
     zip_safe=False,
 )
