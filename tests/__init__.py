@@ -5,6 +5,7 @@ import importlib
 
 import pytest
 
+
 def _importskip(modname):
     try:
         importlib.import_module(modname)
@@ -13,6 +14,7 @@ def _importskip(modname):
         has = False
     func = pytest.mark.skipif(not has, reason=f"requires {modname}")
     return has, func
+
 
 has_dask, requires_dask = _importskip("dask")
 has_geopandas, requires_geopandas = _importskip("geopandas")

@@ -4,19 +4,22 @@ xweights
 
 .. image:: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml/badge.svg
     :target: https://github.com/ludwiglierhammer/xweights/actions/workflows/ci.yml
-    
+
 .. image:: https://codecov.io/gh/ludwiglierhammer/xweights/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/ludwiglierhammer/xweights
-    
-.. image:: https://readthedocs.org/projects/xweights/badge/?version=latest
-    :target: https://xweights.readthedocs.io/en/latest/?version=latest
-    :alt: Documentation Status  
-        
-.. image:: https://pyup.io/repos/github/ludwiglierhammer/xweights/shield.svg
-    :target: https://pyup.io/repos/github/ludwiglierhammer/xweights/
-    :alt: Updates   
 
-Python "xweights" contains all the functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io
+.. image:: https://img.shields.io/pypi/v/xweights.svg
+    :target: https://pypi.python.org/pypi/xweights
+
+.. image:: https://readthedocs.org/projects/xweights/badge/?version=latest
+    :target: https://xweights.readthedocs.io/en/latest/?version=latest
+    :alt: Documentation Status
+
+.. image:: https://results.pre-commit.ci/badge/github/ludwiglierhammer/xweights/main.svg
+    :target: https://results.pre-commit.ci/latest/github/ludwiglierhammer/xweights/main
+    :alt: pre-commit.ci status
+
+Python "xweights" contains functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io
 
 * Free software: MIT license
 * Documentation: https://xweights.readthedocs.io
@@ -35,11 +38,11 @@ Features
 Installation
 ------------
 
-You can install the package directly from github using pip:
+You can install the package directly with pip:
 
 .. code-block:: console
 
-     pip install git+https://github.com/ludwiglierhammer/xweights
+     pip install xweights
 
 If you want to contribute, I recommend cloning the repository and installing the package in development mode, e.g.
 
@@ -52,9 +55,9 @@ If you want to contribute, I recommend cloning the repository and installing the
 In additon you have to install xESMF using _Conda:
 
 .. code-block:: console
-		
+
     conda install -c conda-forge xesmf
-    
+
 This will install the package but you can still edit it and you don't need the package in your :code:`PYTHONPATH`
 
 
@@ -71,7 +74,7 @@ Requirements
 
 * intake-esm
 
-* xarray 
+* xarray
 
 * py-cordex
 

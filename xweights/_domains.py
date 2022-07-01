@@ -1,5 +1,6 @@
 import cordex as cx
 
+
 class Domains:
     """The :class:`Domains` opens all domains provided by py-cordex
     https://py-cordex.readthedocs.io/en/stable/domains.html
@@ -8,10 +9,13 @@ class Domains:
         *domains:*
             Information of CORDEX domains
     """
+
     def __init__(self):
         self.domains = cx.core.domain.domain_names()
 
+
 domains = Domains()
+
 
 def which_domains():
     """List of all available CORDEX domains
@@ -19,14 +23,16 @@ def which_domains():
     Returns
     -------
     List - list
-        List of CORDEX domains 
-    
+        List of CORDEX domains
+
     """
     return domains.domains
 
+
 def get_domain(domain):
     """Creates an xarray dataset containg the domain grid definitions.
-    Grid boundaries in the global coordinates are added (lon_verticces, lat_vertices)
+    Grid boundaries in the global coordinates are added
+    (lon_verticces, lat_vertices).
 
     Parameters
     ----------
@@ -47,4 +53,3 @@ def get_domain(domain):
         eur11 = xw.get_domain('EUR-11')
     """
     return cx.cordex_domain(domain, add_vertices=True)
-

@@ -5,8 +5,6 @@
 
 import unittest
 
-from xweights import xweights
-
 
 class TestGrid_weighted_means(unittest.TestCase):
     """Tests for `xweights` package."""

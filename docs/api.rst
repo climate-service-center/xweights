@@ -12,7 +12,7 @@ Top-level functions
 .. autosummary::
    :toctree: generated/
 
-   compute_weighted_means		
+   compute_weighted_means
    compute_weighted_means_ds
 
 Read input data
@@ -22,7 +22,7 @@ Read input data
    :toctree: generated/
 
    Input
-   
+
 CORDEX domains
 ==============
 
@@ -37,7 +37,7 @@ Pre-defined regions
 
 .. autosummary::
    :toctree: generated/
-	     
+
    get_region
    which_regions
    which_subregions
@@ -49,5 +49,3 @@ xesmf's spatial averager
    :toctree: generated/
 
    spatial_averager
-
-

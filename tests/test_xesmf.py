@@ -1,15 +1,21 @@
+# -*- coding: utf-8 -*-
+# flake8: noqa
 
 import pytest
-
-import xweights as xw
 import xarray as xr
 
-from . import has_xarray, requires_xarray
-from . import has_xesmf, requires_xesmf
-from . import has_numpy, requires_numpy
+import xweights as xw
+
+from . import has_numpy  # noqa
+from . import has_xarray  # noqa
+from . import has_xesmf  # noqa
+from . import requires_numpy  # noqa
+from . import requires_xarray  # noqa
+from . import requires_xesmf  # noqa
+
 
 def test_spatial_averager():
     netcdffile = xw.test_netcdf[0]
-    shp = xw.get_region('states')
+    shp = xw.get_region("states")
     ds = xr.open_dataset(netcdffile)
-    out = xw.spatial_averager(ds, shp)
+    assert xw.spatial_averager(ds, shp)
