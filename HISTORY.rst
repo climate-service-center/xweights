@@ -6,3 +6,9 @@ History
 ------------------
 
 * First release on PyPI.
+
+0.1.1 (2022-07-01)
+------------------
+
+* adjusted to pre-commit
+* use functions from pyhomogenize
