@@ -12,7 +12,7 @@ To install xweights, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install git+https://github.com/ludwiglierhammer/xweights
+    $ pip install xweights
 
 This is the preferred method to install xweights, as it will always install the most recent stable release.
 
