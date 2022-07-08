@@ -12,3 +12,8 @@ History
 
 * adjusted to pre-commit
 * use functions from pyhomogenize
+
+0.1.2 (2022-07-08)
+------------------
+
+* change pyhomogenize version requirements
