@@ -4,15 +4,17 @@ import xesmf as xe
 from ._domains import get_domain
 
 
-def get_spatial_averager(ds, geometry):
-    """get xesmf's spatail averager
+def get_spatial_averager(ds, gdf, name=None):
+    """get xesmf's spatial averager
 
     Parameters
     ----------
     ds: xr.Dataset or str
         Dataset or name of CORDEX_domain
-    geometry:
-        dsgds
+    gdf:
+        gp.GeoDataFrame
+    name: str (optional)
+        `gdf`'s column name
 
     Returns
     -------
@@ -20,17 +22,22 @@ def get_spatial_averager(ds, geometry):
     """
     if isinstance(ds, str):
         ds = get_domain(ds)
-    return xe.SpatialAverager(ds, geometry)
+    savg = xe.SpatialAverager(ds, gdf.geometry)
+    if name is None:
+        name = gdf.name
+    savg.name = name
+    savg.field_region = gdf[name]
+    return savg
 
 
-def spatial_averager(ds, shp, savg=None):
+def spatial_averaging(ds, shp=None, savg=None):
     """xesmf's spatial averager
 
     Parameters
     ----------
     ds: xr.Dataset
 
-    shp: gp.GeoDataFrame
+    shp: gp.GeoDataFrame (optional)
 
     savg: xesmf.SpatialAverager (optional)
 
@@ -60,19 +67,23 @@ def spatial_averager(ds, shp, savg=None):
 
     """
     if savg is None:
-        savg = get_spatial_averager(ds, shp.geometry)
+        savg = get_spatial_averager(ds, shp)
     elif isinstance(savg, str):
-        savg = get_spatial_averager(savg, shp.geometry)
+        savg = get_spatial_averager(savg, shp)
 
     nnz = [w.data.nnz for w in savg.weights]
-
     out = savg(ds)
+    dims = ("geom",)
     out = out.assign_coords(
-        field_region=xr.DataArray(
-            shp["name"],
-            dims=("geom",),
-        )
+        {
+            savg.name: xr.DataArray(
+                savg.field_region,
+                dims=dims,
+            ),
+            "nnz": xr.DataArray(
+                nnz,
+                dims=dims,
+            ),
+        },
     )
-    out = out.assign_coords(nnz=xr.DataArray(nnz, dims=("geom",)))
-
     return out
