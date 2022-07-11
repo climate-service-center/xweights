@@ -63,18 +63,18 @@ def merge_entries(gdf, column):
         name = "all"
 
     if column == "all":
-        dic = {"name": [name]}
+        dic = {column: [name]}
         polygeometry = get_polygeometry(gdf)
     else:
-        dic = {"name": getattr(gdf, column).unique()}
+        dic = {column: getattr(gdf, column).unique()}
         polygeometry = []
         for values in dic.values():
             for value in values:
                 polygeometry += get_polygeometry(
                     gdf[getattr(gdf, column) == value],
                 )
-
     dic["geometry"] = polygeometry
     df = pd.DataFrame(dic)
     gdf = gp.GeoDataFrame(df, geometry="geometry", crs=gdf.crs)
+    gdf.name = column
     return gdf
