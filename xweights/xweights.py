@@ -4,16 +4,16 @@ import xarray as xr
 from ._io import Input
 from ._regions import get_region
 from ._tabulator import concat_dataframe, write_to_csv
-from ._weightings import get_spatial_averager, spatial_averager
+from ._weightings import get_spatial_averager, spatial_averaging
 
 
 def compute_weighted_means_ds(
     ds,
-    shp,
+    shp=None,
     ds_name="dataset",
     time_range=None,
     column_names=[],
-    averager=False,
+    averager=None,
     df_output=pd.DataFrame(),
     output=None,
     land_only=False,
@@ -27,7 +27,7 @@ def compute_weighted_means_ds(
     ----------
     ds: xr.DataSet
 
-    shp: gp.GeoDataFrame
+    shp: gp.GeoDataFrame (optional)
        gp.GeoDataFrame containing the information needed
        for xesmf's spatial averaging.
 
@@ -103,7 +103,6 @@ def compute_weighted_means_ds(
                                                         "rcm_version_id"],
                                           )
     """
-
     if land_only:
         """
         Not clear how to find right lsm file for each ds
@@ -123,7 +122,7 @@ def compute_weighted_means_ds(
         for column in column_names
     }
     try:
-        out = spatial_averager(ds, shp, savg=averager)
+        out = spatial_averaging(ds, shp, savg=averager)
     except Exception:
         return df_output
     drop = [i for i in out.coords if not out[i].dims]
@@ -135,14 +134,12 @@ def compute_weighted_means_ds(
         do it seperately after using xweights.
         """
         NotImplementedError
-
     df_output = concat_dataframe(
         df_output,
         out,
         column_dict=column_dict,
         name=ds_name,
     )
-
     if output:
         write_to_csv(df_output, output)
 
