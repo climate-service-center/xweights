@@ -17,3 +17,9 @@ History
 ------------------
 
 * change pyhomogenize version requirements
+
+0.2.0 (2022-07-11)
+------------------
+
+* rename spatial_averager
+* kepp geometry attributes
