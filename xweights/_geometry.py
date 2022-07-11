@@ -76,5 +76,5 @@ def merge_entries(gdf, column):
     dic["geometry"] = polygeometry
     df = pd.DataFrame(dic)
     gdf = gp.GeoDataFrame(df, geometry="geometry", crs=gdf.crs)
-    gdf.name = column
+    gdf.attrs["name"] = column
     return gdf

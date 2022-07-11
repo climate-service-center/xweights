@@ -190,6 +190,7 @@ def get_region(region_names, name=None, merge=None, column=None):
 
     gdf = gp.GeoDataFrame(pd.concat(gdf, ignore_index=True))
     gdf = convert_crs(gdf)
+    gdf.attrs["name"] = column
     if merge:
         gdf = merge_entries(gdf, merge)
     return gdf

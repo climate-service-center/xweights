@@ -24,7 +24,7 @@ def get_spatial_averager(ds, gdf, name=None):
         ds = get_domain(ds)
     savg = xe.SpatialAverager(ds, gdf.geometry)
     if name is None:
-        name = gdf.name
+        name = gdf.attrs["name"]
     savg.name = name
     savg.field_region = gdf[name]
     return savg
