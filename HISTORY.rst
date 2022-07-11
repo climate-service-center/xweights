@@ -22,4 +22,9 @@ History
 ------------------
 
 * rename spatial_averager
-* kepp geometry attributes
+* keep geometry attributes
+
+0.2.1 (2022-07-11)
+------------------
+
+* read and write column name to attributes
