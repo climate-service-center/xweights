@@ -18,4 +18,4 @@ def test_spatial_averager():
     netcdffile = xw.test_netcdf[0]
     shp = xw.get_region("states")
     ds = xr.open_dataset(netcdffile)
-    assert xw.spatial_averager(ds, shp)
+    assert xw.spatial_averaging(ds, shp)
