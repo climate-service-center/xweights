@@ -57,6 +57,16 @@ setup(
     keywords="xweights",
     name="xweights",
     packages=find_packages(include=["xweights", "xweights.*"]),
+    package_data={
+        "xweights": [
+            "data/netcdf/*.nc",
+            "data/shp/*.cpg",
+            "data/shp/*.dbf",
+            "data/shp/*.prj",
+            "data/shp/*.shp",
+            "data/shp/*.shx",
+        ]
+    },
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,

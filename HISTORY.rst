@@ -28,3 +28,8 @@ History
 ------------------
 
 * read and write column name to attributes
+
+0.2.2 (2022-07-12)
+------------------
+
+* add data and tables via pip install
