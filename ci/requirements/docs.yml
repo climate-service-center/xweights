@@ -3,6 +3,7 @@ name: xweights-docs
 channels:
   - conda-forge
   - nodefaults
+  - nesii
 
 dependencies:
   - python
@@ -19,6 +20,7 @@ dependencies:
   - nbsphinx-link
   - ipython
   - xesmf
+  - esmpy
   - numba
   - py-cordex
   - nc-time-axis
