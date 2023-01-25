@@ -38,6 +38,12 @@ Features
 Installation
 ------------
 
+**Note:** Before building `xweights` from source, you nedd **first** install `cartopy` by using conda:
+
+.. code-block:: console
+
+   conda install -c conda-forge cartopy
+
 You can install the package directly with pip:
 
 .. code-block:: console
