@@ -33,3 +33,8 @@ History
 ------------------
 
 * add data and tables via pip install
+
+0.2.3 (2023-01-26)
+------------------
+
+* remove cartopy from requirements.txt
