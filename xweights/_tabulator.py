@@ -31,7 +31,6 @@ def write_to_pandas(da, column_dict={}, name="name"):
 
 
 def concat_dataframe(dataframe, ds, variables=None, **kwargs):
-
     """Concatenate newly created pd.DataFrame to already existing pd.DataFrame
 
     Parameters

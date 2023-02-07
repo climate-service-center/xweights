@@ -19,7 +19,6 @@ def compute_weighted_means_ds(
     land_only=False,
     time_stat=False,
 ):
-
     """
     Compute spatial weighted mean of xr.Dataset
 
@@ -162,7 +161,6 @@ def compute_weighted_means(
     time_stat=False,
     **kwargs
 ):
-
     """
     Compute spatial weighted mean of user-given inputs.
 
@@ -283,7 +281,6 @@ def compute_weighted_means(
     df_output = pd.DataFrame()
 
     for name, ds in dataset_dict.items():
-
         df_output = compute_weighted_means_ds(
             ds,
             shp,
