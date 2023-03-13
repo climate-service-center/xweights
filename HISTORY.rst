@@ -38,3 +38,8 @@ History
 ------------------
 
 * remove cartopy from requirements.txt
+
+0.2.4 (2023-03-13)
+------------------
+
+* using pycordex >= 0.5.1
