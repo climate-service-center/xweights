@@ -11,7 +11,7 @@ class Domains:
     """
 
     def __init__(self):
-        self.domains = cx.core.domain.domain_names()
+        self.domains = cx.domain.domain_names()
 
 
 domains = Domains()
