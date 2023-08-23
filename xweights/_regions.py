@@ -3,6 +3,7 @@ import os
 import cordex as cx
 import geopandas as gp
 import pandas as pd
+import pooch
 
 from ._geometry import convert_crs, merge_entries
 
@@ -32,6 +33,28 @@ class Regions:
         self.prudence = self.Prudence()
         self.userreg = self.UserRegion(geodataframe, selection)
 
+    def _counties_merged():
+        def _pooch_retrieve(ifile):
+            cache_url = "~/.xweights"
+            url = "https://github.com/ludwiglierhammer/test_data/raw/main/shp"
+            known_hash = None
+            return pooch.retrieve(
+                url=os.path.join(url, ifile),
+                path=cache_url,
+                known_hash=known_hash,
+            )
+
+        import geopandas as gpd
+
+        shp_ = _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.shp")
+        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.cpg")
+        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.dbf")
+        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.prj")
+        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.shx")
+        gdf = gpd.read_file(shp_)
+        gdf.attrs["name"] = "NUTS_ID"
+        return gdf
+
     def get_region_names(self, regionname):
         regionname = getattr(self, regionname)
         geodataframe = regionname.geodataframe
@@ -54,6 +77,14 @@ class Regions:
         def __init__(self):
             self.description = "Counties (Landkreise) from Germany."
             self.geodataframe = cx.regions.germany.geodataframe("krs")
+            self.selection = "name"
+
+    class Counties_merged:
+        def __init__(self):
+            self.description = (
+                "Counties (Landkreise) from Germany (merged less than 400m2)"
+            )
+            self.geodataframe = self._counties_merged()
             self.selection = "name"
 
     class States:
