@@ -43,3 +43,8 @@ History
 ------------------
 
 * using pycordex >= 0.5.1
+
+0.2.5 (2023-08-23)
+------------------
+
+* adding new region: counties_merged (merge counties less than 400m2)
