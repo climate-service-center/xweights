@@ -3,9 +3,27 @@ import os
 import cordex as cx
 import geopandas as gp
 import pandas as pd
-import pooch
 
 from ._geometry import convert_crs, merge_entries
+
+
+def _pooch_retrieve(url, known_hash=None):
+    from pooch import retrieve
+
+    cache_url = "~/.xweights"
+    return retrieve(
+        url=url,
+        path=cache_url,
+        known_hash=known_hash,
+    )
+
+
+def _get_geodataframe(shape, name="name"):
+    import geopandas as gpd
+
+    gdf = gpd.read_file(shape)
+    gdf.attrs["name"] = name
+    return gdf
 
 
 class Regions:
@@ -18,6 +36,9 @@ class Regions:
             List of pre-defined regions (from py-cordex)
         *counties:* class
             Containing information about Landkreise in Germany
+        *counties_merged:* class
+            Containing information about Landkreise in Germany
+            (merged if less than 400m^2)
         *states:* class
             Containing information about Bundeslaender in Germany
         *prudence:* class
@@ -27,33 +48,12 @@ class Regions:
     """
 
     def __init__(self, geodataframe=None, selection=None):
-        self.regions = ["counties", "states", "prudence"]
+        self.regions = ["counties", "counties_merged", "states", "prudence"]
         self.counties = self.Counties()
+        self.counties_merged = self.Counties_merged()
         self.states = self.States()
         self.prudence = self.Prudence()
         self.userreg = self.UserRegion(geodataframe, selection)
-
-    def _counties_merged():
-        def _pooch_retrieve(ifile):
-            cache_url = "~/.xweights"
-            url = "https://github.com/ludwiglierhammer/test_data/raw/main/shp"
-            known_hash = None
-            return pooch.retrieve(
-                url=os.path.join(url, ifile),
-                path=cache_url,
-                known_hash=known_hash,
-            )
-
-        import geopandas as gpd
-
-        shp_ = _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.shp")
-        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.cpg")
-        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.dbf")
-        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.prj")
-        _pooch_retrieve("NUTS3_merged_counites_less_than_400m2.shx")
-        gdf = gpd.read_file(shp_)
-        gdf.attrs["name"] = "NUTS_ID"
-        return gdf
 
     def get_region_names(self, regionname):
         regionname = getattr(self, regionname)
@@ -86,6 +86,19 @@ class Regions:
             )
             self.geodataframe = self._counties_merged()
             self.selection = "name"
+
+        def _counties_merged(self):
+            url_base = (
+                "https://github.com/ludwiglierhammer/test_data/raw/main/shp"  # noqa
+            )
+            url = os.path.join(
+                url_base, "NUTS3_merged_counites_less_than_400m2.shape.zip"
+            )
+            shape_zip = _pooch_retrieve(
+                url,
+                known_hash="2ca82af334aee2afdcce4799d5cc1ce50ce7bd0710c9ec39e6378519df60ad7a",  # noqa
+            )
+            return _get_geodataframe(shape_zip, name="NUTS_ID")
 
     class States:
         def __init__(self):
