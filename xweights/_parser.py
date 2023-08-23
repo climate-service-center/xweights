@@ -83,7 +83,7 @@ def create_parser():
         "--time_range",
         dest="time_range",
         nargs="+",
-        help="Select time range from dataset. Use format %yyyy[-%mm[-%dd]]",
+        help="Select time range from dataset. Use format yyyy[-mm[-dd]]",
     )
     parser.add_argument(
         "-csvcolumns",
