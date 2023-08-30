@@ -37,6 +37,9 @@ def test_compute_weighted_means_ds():
             "driving_model_ensemlbe_member",
             "model_id",
             "rcm_version_id",
+            "units",
+            "standard_name",
+            "not_available",
         ],
     )
 
