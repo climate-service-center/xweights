@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pandas as pd
 from pyhomogenize import get_var_name
 
@@ -22,12 +23,20 @@ def write_to_pandas(da, column_dict={}, name="name"):
     -------
     pd.DataFrame
     """
-    df_output = da.to_dataframe()
-    length = len(df_output)
+    df = da.to_dataframe()
     for key, value in column_dict.items():
-        df_output[key] = [value] * length
-    df_output["name"] = [name] * length
-    return df_output
+        if isinstance(value, dict):
+            mask = df[key].notnull()
+            for k, v in value.items():
+                if k in df.columns:
+                    other = df[k]
+                else:
+                    other = None
+                df[k] = np.where(mask, v, other)
+        else:
+            df[key] = value
+    df["name"] = name
+    return df
 
 
 def concat_dataframe(dataframe, ds, variables=None, **kwargs):

@@ -24,7 +24,7 @@ def compute_weighted_means_ds(
 
     Parameters
     ----------
-    ds: xr.DataSet
+    ds: xr.Dataset
 
     shp: gp.GeoDataFrame (optional)
        gp.GeoDataFrame containing the information needed
@@ -39,7 +39,8 @@ def compute_weighted_means_ds(
 
     column_names: list (optional)
         Extra column names of the pd.DataFrame;
-        the information is read from global attributes of ``ds``.
+        the information is read from both global attributes
+        and variable attributes from `ds`.
 
     averager: str, xesmf.SpatialAverager (optional)
         Use CORDEX domain name to calculate a xesmf.SpatialAverager object
@@ -116,16 +117,26 @@ def compute_weighted_means_ds(
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 
-    column_dict = {
-        column: ds.attrs[column] if hasattr(ds, column) else None
-        for column in column_names
-    }
-    try:
-        out = spatial_averaging(ds, shp, savg=averager)
-    except Exception:
-        return df_output
+    out = spatial_averaging(ds, shp, savg=averager)
     drop = [i for i in out.coords if not out[i].dims]
     out = out.drop(labels=drop)
+
+    column_dict = {}
+    for column in column_names:
+        skip = False
+        if hasattr(ds, column):
+            column_dict[column] = ds.attrs[column]
+            continue
+        for data_var in out.data_vars:
+            if hasattr(ds[data_var], column):
+                skip = True
+                value = ds[data_var].attrs[column]
+                if data_var in column_dict.keys():
+                    column_dict[data_var][column] = value
+                else:
+                    column_dict[data_var] = {column: value}
+        if skip is False:
+            column_dict[column] = None
 
     if time_stat:
         """
@@ -139,9 +150,9 @@ def compute_weighted_means_ds(
         column_dict=column_dict,
         name=ds_name,
     )
+
     if output:
         write_to_csv(df_output, output)
-
     return df_output
 
 
@@ -275,11 +286,9 @@ def compute_weighted_means(
         averager = get_spatial_averager(domain_name, shp.geometry)
     elif averager is False:
         averager = domain_name
-
     dataset_dict = Input(input, **kwargs).dataset_dict
 
     df_output = pd.DataFrame()
-
     for name, ds in dataset_dict.items():
         df_output = compute_weighted_means_ds(
             ds,
