@@ -48,3 +48,8 @@ History
 ------------------
 
 * adding new region: counties_merged (merge counties less than 400m2)
+
+0.2.6 (2023-08-30)
+------------------
+
+* optionally: wite variable attributes to dataframe
