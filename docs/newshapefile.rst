@@ -1,6 +1,6 @@
 .. highlight:: shell
-	       
-==============================	       
+
+==============================
 How to add your own shape file
 ==============================
 
@@ -14,10 +14,10 @@ Erstelle einen neuen branch in weights.
 
 Editiere die Datei
 
-.. code-block:: console  
+.. code-block:: console
 
 		xweights/_regions.py:
-   
+
 L.51: Erweiter die Liste um den Namen deiner neuen Region.
 
 .. code-block:: console
@@ -59,6 +59,5 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
 Den known_hash kannst du mit dem HASH deiner gezippten Datei ersetzen. Dieser wird dir angezeigt, wenn du folgendes ausführst:
 
 .. code-block:: console
-		
-		xweights which_regions
 
+		xweights which_regions
