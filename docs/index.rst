@@ -8,6 +8,7 @@ Welcome to xweights' documentation!
    readme
    installation
    usage
+   newshapefile
    examples
    contributing
    authors

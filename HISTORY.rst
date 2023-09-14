@@ -53,3 +53,8 @@ History
 ------------------
 
 * optionally: wite variable attributes to dataframe
+
+ 0.3.0 (unpublished)
+------------------
+
+* added new regions: IPCC WG1 Reference Regions v4 from Atlas
