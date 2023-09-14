@@ -43,16 +43,25 @@ class Regions:
             Containing information about Bundeslaender in Germany
         *prudence:* class
             Containing information about PRUDENCE regions
+        *ipcc:* class
+            containing AR6-IPCC-WGI Reference Regions v4 from the Atlas
         *userreg*: class
             Containing information about user-given shapefile
     """
 
     def __init__(self, geodataframe=None, selection=None):
-        self.regions = ["counties", "counties_merged", "states", "prudence"]
+        self.regions = [
+            "counties",
+            "counties_merged",
+            "states",
+            "prudence",
+            "ipcc",
+        ]
         self.counties = self.Counties()
         self.counties_merged = self.Counties_merged()
         self.states = self.States()
         self.prudence = self.Prudence()
+        self.ipcc = self.IPCC()
         self.userreg = self.UserRegion(geodataframe, selection)
 
     def get_region_names(self, regionname):
@@ -99,6 +108,25 @@ class Regions:
                 known_hash="2ca82af334aee2afdcce4799d5cc1ce50ce7bd0710c9ec39e6378519df60ad7a",  # noqa
             )
             return _get_geodataframe(shape_zip, name="NUTS_ID")
+
+    class IPCC:
+        def __init__(self):
+            self.description = "AR6-IPCC-WGI Ref. Regions v4"
+            self.geodataframe = self._ipcc()
+            self.selection = "name"
+
+        def _ipcc(self):
+            url_base = (
+                "https://github.com/ludwiglierhammer/test_data/raw/main/shp"  # noqa
+            )
+            url = os.path.join(
+                url_base, "IPCC-WGI-reference-regions-v4_shapefile.zip"
+            )  # noqa
+            shape_zip = _pooch_retrieve(
+                url,
+                known_hash="c83881a18e74912385ad578282de721cc8e866b62cbbc75446e52e7041c81cff",  # noqa
+            )
+            return _get_geodataframe(shape_zip, name="IPCCv4")
 
     class States:
         def __init__(self):
