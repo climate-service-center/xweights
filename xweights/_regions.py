@@ -113,7 +113,7 @@ class Regions:
         def __init__(self):
             self.description = "AR6-IPCC-WGI Ref. Regions v4"
             self.geodataframe = self._ipcc()
-            self.selection = "name"
+            self.selection = "Acronym"
 
         def _ipcc(self):
             url_base = (
