@@ -4,7 +4,6 @@
 How to add your own shape file
 ==============================
 
-<<<<<<< HEAD
 Instructions how to add a new shape file of a new region to xweights.
 
 Here it is explained on the example of the IPCC_ Reference Regions: IPCC-WGI Reference Regions version 4:
@@ -39,13 +38,10 @@ Nun kannst du einen pull request stellen.
 Erstelle einen neuen branch in weights.
 
 Editiere die Datei
->>>>>>> 4e7d29f749f8f7b21c729b0cc71c951a249f681d
 
 .. code-block:: console
 
 		xweights/_regions.py:
-
-<<<<<<< HEAD
 
 L.51: Add your new region to the list (e.g. ipcc):
 
@@ -72,6 +68,7 @@ copy the class counties_merged and add it again with your new name e.g. ipcc and
 		      self.selection = "name"
 
 		def _ipcc(self):
+
 =======
 L.51: Erweiter die Liste um den Namen deiner neuen Region.
 
@@ -98,16 +95,11 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
 		      self.selection = "name"
 
 		def _srex(self):
->>>>>>> 4e7d29f749f8f7b21c729b0cc71c951a249f681d
 		    url_base = (
 		    "https://github.com/ludwiglierhammer/test_data/raw/main/shp"  # noqa
 		    )
 		    url = os.path.join(
-<<<<<<< HEAD
-		          url_base, "<name_of your_zip_shape file>"
-=======
-		          url_base, "<name_deiner_zip_datei>"
->>>>>>> 4e7d29f749f8f7b21c729b0cc71c951a249f681d
+		          url_base, "<name_deiner_zip_datei>",
 			  )
 		    shape_zip = _pooch_retrieve(
                     url,
@@ -137,4 +129,3 @@ Den known_hash kannst du mit dem HASH deiner gezippten Datei ersetzen. Dieser wi
 .. code-block:: console
 
 		xweights which_regions
->>>>>>> 4e7d29f749f8f7b21c729b0cc71c951a249f681d
