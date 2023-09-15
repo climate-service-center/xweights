@@ -6,9 +6,7 @@
 import warnings
 
 from . import _regions as regions
-from ._domains import get_domain, which_domains
 from ._geometry import convert_crs, merge_entries
-from ._io import Input, adjust_name
 from ._regions import get_region, which_regions, which_subregions
 from ._tabulator import concat_dataframe, write_to_csv
 from ._weightings import get_spatial_averager, spatial_averaging
