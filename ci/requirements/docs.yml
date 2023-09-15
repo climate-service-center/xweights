@@ -3,26 +3,26 @@ name: xweights-docs
 channels:
   - conda-forge
   - nodefaults
-  - nesii
 
 dependencies:
-  - python
+  - dask
+  - geopandas
   - xarray
+  - py-cordex
+  - cartopy
+  - xesmf
+  - pip
+  # for documentation
   - docutils==0.17.1
   - nbconvert
   - numpydoc
   - pillow
-  - pip
-  - py-cordex
   - sphinx_rtd_theme==1.0.0
   - sphinx==4.2.0
   - pandoc
   - nbsphinx
   - nbsphinx-link
   - ipython
-  - xesmf
-  - dask
-  - geopandas
 
   - pip:
     - sphinxcontrib-mockautodoc

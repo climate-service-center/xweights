@@ -1,7 +1,9 @@
 name: xweights-tests
+
 channels:
     - conda-forge
     - nodefaults
+
 dependencies:
     - dask
     - geopandas
@@ -12,12 +14,11 @@ dependencies:
     - numpy
     - setuptools
     - pooch
-    - netCDF4
+    - pip
     # for testing
     - pytest
     - pytest-cov
     - pytest-env
-    - pip
 
     - pip:
       - pyhomogenize
