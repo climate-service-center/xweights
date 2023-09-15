@@ -17,4 +17,4 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 __author__ = """Ludwig Lierhammer"""
 __email__ = "ludwig.lierhammer@hereon.de"
-__version__ = "0.2.6"
+__version__ = "0.3.0"
