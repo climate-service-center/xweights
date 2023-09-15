@@ -40,6 +40,7 @@ def test_compute_weighted_means_ds_gdf():
             "standard_name",
             "not_available",
         ],
+        output=".",
     )
 
 
@@ -61,6 +62,7 @@ def test_compute_weighted_means_ds_region():
             "standard_name",
             "not_available",
         ],
+        output="test",
     )
 
 
@@ -78,6 +80,7 @@ def test_compute_weighted_means_region():
             "04_Bremen",
         ],
         merge_columns=["all", "NorthSeaCoast"],
+        output="test.csv",
     )
 
 

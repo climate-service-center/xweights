@@ -225,7 +225,7 @@ def compute_weighted_means(
     column_names=[],
     merge_columns=False,
     column_merge=False,
-    outdir=None,
+    output=None,
     land_only=False,
     time_stat=False,
     **kwargs
@@ -279,7 +279,7 @@ def compute_weighted_means(
     column_merge: str (optional)
         Column name to differentiate shapefile while merging.
 
-    outdir: str (optional)
+    outdput: str (optional)
         Name of the output directory path or file
 
     land_only: bool (optional)
@@ -373,7 +373,7 @@ def compute_weighted_means(
             time_stat=time_stat,
         )
 
-    if outdir:
-        write_to_csv(df_output, outdir)
+    if output:
+        write_to_csv(df_output, output)
 
     return df_output
