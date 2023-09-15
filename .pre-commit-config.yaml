@@ -51,16 +51,10 @@ repos:
   hooks:
   - id: nbstripout
     files: '.ipynb'
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.3.0
-  hooks:
-  - id: pydocstyle
-    args: ['--config=setup.cfg']
 - repo: https://github.com/keewis/blackdoc
   rev: v0.3.8
   hooks:
   - id: blackdoc
-    exclude: '(xclim/indices/__init__.py|docs/installation.rst)'
     additional_dependencies: ['black==23.7.0']
 - repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.26.3
