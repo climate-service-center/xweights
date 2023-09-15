@@ -45,11 +45,6 @@ setup(
     ],
     description="Python xweights contains functions"
     "to create grid weighted area means",
-    entry_points={
-        "console_scripts": [
-            "xweights=xweights.cli:main",
-        ],
-    },
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
