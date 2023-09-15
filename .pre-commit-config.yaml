@@ -11,7 +11,6 @@ repos:
   rev: v4.4.0
   hooks:
   - id: trailing-whitespace
-    exclude: setup.cfg
   - id: end-of-file-fixer
     exclude: '.ipynb'
   - id: check-yaml
@@ -31,7 +30,6 @@ repos:
   hooks:
   - id: flake8
     additional_dependencies: ['flake8-alphabetize', 'flake8-rst-docstrings']
-    args: ['--config=setup.cfg']
 - repo: https://github.com/PyCQA/isort
   rev: 5.12.0
   hooks:
