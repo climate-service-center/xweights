@@ -19,7 +19,7 @@ xweights
     :target: https://results.pre-commit.ci/latest/github/ludwiglierhammer/xweights/main
     :alt: pre-commit.ci status
 
-Python "xweights" contains functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xesmf https://xesmf.readthedocs.io
+Python "xweights" contains functions to calculate grid weighted area means from predefined regions or from an user-given shapefile. This tool is a wrapper around the python package xESMF_.
 
 * Free software: MIT license
 * Documentation: https://xweights.readthedocs.io
@@ -30,9 +30,7 @@ Features
 
 * Calculate grid-weighted-means and save the output as CSV file
 
-* As input you can choose between files on disk and intake-esm catalogues. Xarray dataset input is under development.
-
-* Use all these features as an command-line tool too
+* As input you need a dataset dictionary. Values are xarray.Datasets and keys correspondin strings.
 
 
 Installation
@@ -78,8 +76,6 @@ Requirements
 
 * geopandas
 
-* intake-esm
-
 * xarray
 
 * py-cordex
@@ -102,3 +98,4 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _Conda: https://docs.conda.io/
+.. _xESMF: https://xesmf.readthedocs.io
