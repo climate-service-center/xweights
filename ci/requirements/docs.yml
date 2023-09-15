@@ -20,12 +20,6 @@ dependencies:
   - nbsphinx-link
   - ipython
   - xesmf
-  - esmpy
-  - numba
-  - py-cordex
-  - nc-time-axis
-  - cftime
-  - intake-esm
   - dask
   - geopandas
 
