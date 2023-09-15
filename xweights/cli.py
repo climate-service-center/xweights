@@ -36,7 +36,6 @@ def main():
         args.input_files,
         region=args.region,
         subregion=args.subregion,
-        domain_name=args.domain,
         time_range=args.time_range,
         column_names=args.csv_column_names,
         merge_columns=args.merge_columns,

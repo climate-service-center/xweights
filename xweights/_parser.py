@@ -68,25 +68,14 @@ def create_parser():
         help="Set names of the subregions",
     )
     parser.add_argument(
-        "-d",
-        "--domain",
-        dest="domain",
-        default="EUR-11",
-        help=(
-            "Domain for geometry weighting only."
-            "Chosse one of the CORDEX_domains."
-            "Default is EUR-11."
-        ),
-    )
-    parser.add_argument(
-        "-trange",
+        "-t_range",
         "--time_range",
         dest="time_range",
         nargs="+",
         help="Select time range from dataset. Use format yyyy[-mm[-dd]]",
     )
     parser.add_argument(
-        "-csvcolumns",
+        "-csv_columns",
         "--csv_column_names",
         dest="csv_column_names",
         nargs="+",
