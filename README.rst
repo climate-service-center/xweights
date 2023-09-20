@@ -36,7 +36,7 @@ Features
 Installation
 ------------
 
-**Note:** Before building `xweights` from source, you nedd **first** install `cartopy` by using conda:
+**Note:** Before building `xweights` from source, **firstly** you need to install `cartopy` by using conda:
 
 .. code-block:: console
 
