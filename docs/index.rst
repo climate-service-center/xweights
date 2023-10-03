@@ -9,7 +9,7 @@ Welcome to xweights' documentation!
    installation
    usage
    examples
-   newshapefile.rst
+   newshapefile
    contributing
    authors
    api
