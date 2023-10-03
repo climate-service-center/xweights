@@ -8,8 +8,8 @@ Welcome to xweights' documentation!
    readme
    installation
    usage
-   newshapefile
    examples
+   newshapefile.rst
    contributing
    authors
    api
