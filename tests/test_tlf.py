@@ -2,29 +2,57 @@
 
 import pytest
 import xarray as xr
+from pyhomogenize import open_xrdataset
 
 import xweights as xw
 
-from . import has_cordex  # noqa
-from . import has_dask  # noqa
-from . import has_geopandas  # noqa
-from . import has_intake  # noqa
-from . import has_numpy  # noqa
-from . import has_xarray  # noqa
-from . import has_xesmf  # noqa
-from . import requires_cordex  # noqa
-from . import requires_dask  # noqa
-from . import requires_geopandas  # noqa
-from . import requires_intake  # noqa
-from . import requires_numpy  # noqa
-from . import requires_xarray  # noqa
-from . import requires_xesmf  # noqa
+# from . import has_cordex  # noqa
+# from . import has_dask  # noqa
+# from . import has_geopandas  # noqa
+# from . import has_intake  # noqa
+# from . import has_numpy  # noqa
+# from . import has_xarray  # noqa
+# from . import has_xesmf  # noqa
+# from . import requires_cordex  # noqa
+# from . import requires_dask  # noqa
+# from . import requires_geopandas  # noqa
+# from . import requires_intake  # noqa
+# from . import requires_numpy  # noqa
+# from . import requires_xarray  # noqa
+# from . import requires_xesmf  # noqa
 
 
 def test_compute_weighted_means_ds_gdf():
     netcdffile = xw.test_netcdf[0]
     gdf = xw.get_region("states")
     ds = xr.open_dataset(netcdffile)
+    print(ds.chunks)
+    print(xr)
+    ds = open_xrdataset(netcdffile)
+    # ds = xr.open_dataset(netcdffile)
+    print(ds.chunks)
+    ds = ds.chunk(chunks={})
+    print(ds.chunks)
+    # ds = open_xrdataset(
+    #    netcdffile,
+    #    chunks=None,
+    #    concat_dim=None,
+    #    compat="no_conflicts",
+    #    preprocess=None,
+    #    engine=None,
+    #    data_vars="all",
+    #    coords="different",
+    #    combine="by_coords",
+    #    parallel=False,
+    #    join="outer",
+    #    attrs_file=None,
+    #    combine_attrs="override",
+    # )
+    # ds = ds.unify_chunks()
+    # print(ds.chunks)
+    # ds = xr.open_mfdataset(netcdffile)
+    # print(ds.chunks)
+    return
     xw.compute_weighted_means_ds(
         ds,
         gdf=gdf,
@@ -100,3 +128,6 @@ def test_compute_weighted_means_gdf():
         ],
         merge_columns=["all", "NorthSeaCoast"],
     )
+
+
+test_compute_weighted_means_ds_gdf()
