@@ -54,7 +54,20 @@ History
 
 * optionally: wite variable attributes to dataframe
 
- 0.3.0 (unpublished)
+0.3.0 (2023-09-15)
 ------------------
 
 * added new regions: IPCC WG1 Reference Regions v4 from Atlas
+* xweights/_io.py is no longer available
+* xweights/_domains.py is no longer available
+* function `spatial_averager` -> `spatial_averaging`
+* function `compute_weighted_means`:
+
+  * optionally: set `averager_ds` to calculate a general xesmf.SpatialAverager
+  * parameter `shp` -> `gdf`
+  * parameter `input` -> `dataset_dict`
+  * parameter `dataset_dict` has to be a dictionary
+  * parameter `outdir` -> `output`
+
+* function `compute_weighted_means_ds`: parameters are now similar to `compute_weighted_means`
+* command-line interface is no longer available

@@ -1,19 +1,46 @@
 import pandas as pd
 import xarray as xr
 
-from ._io import Input
 from ._regions import get_region
 from ._tabulator import concat_dataframe, write_to_csv
 from ._weightings import get_spatial_averager, spatial_averaging
 
 
+def _get_gdf(gdf=None, region=None, subregion=None, merge=None, column=None):
+    if gdf is None:
+        return get_region(
+            region,
+            name=subregion,
+            merge=merge,
+            column=column,
+        )
+    return gdf
+
+
+def _get_averager(
+    averager=None,
+    ds=None,
+    gdf=None,
+):
+    if averager is True:
+        return get_spatial_averager(
+            ds,
+            gdf,
+        )
+    return averager
+
+
 def compute_weighted_means_ds(
     ds,
-    shp=None,
     ds_name="dataset",
+    region=None,
+    subregion=None,
+    gdf=None,
+    averager=True,
     time_range=None,
     column_names=[],
-    averager=None,
+    merge_columns=False,
+    column_merge=False,
     df_output=pd.DataFrame(),
     output=None,
     land_only=False,
@@ -26,13 +53,25 @@ def compute_weighted_means_ds(
     ----------
     ds: xr.Dataset
 
-    shp: gp.GeoDataFrame (optional)
-       gp.GeoDataFrame containing the information needed
-       for xesmf's spatial averaging.
-
     ds_name: str (optional)
         Name of the dataset will be written to the pd.DataFrame
         as an extra column.
+
+    region: str (optional)
+        Name of the shapefile or pre-defined region
+        containing the information needed
+        for xesmf's spatial averaging.
+
+    subregion: str or list (optional)
+        Name of the subregion(s) to be selected from ``region``
+
+    gdf: gp.GeoDataFrame (optional)
+       gp.GeoDataFrame containing the information needed
+       for xesmf's spatial averaging.
+
+    averager: bool or xesmf.SpatialAverager (optional)
+        If True: Calculate a xesmf.SpatialAverager
+        Else: Use user-given xesmf.SpatialAverager
 
     time_range: list (optional)
         List containing start and end date to select from ``ds``
@@ -42,9 +81,13 @@ def compute_weighted_means_ds(
         the information is read from both global attributes
         and variable attributes from `ds`.
 
-    averager: str, xesmf.SpatialAverager (optional)
-        Use CORDEX domain name to calculate a xesmf.SpatialAverager object
-        or use user-given one.
+    merge_columns: str or list (optional)
+        Name of the column to be merged together.
+        Set ['all', 'newname'] to merge all geometries
+        and set new column name to 'newname'.
+
+    column_merge: str (optional)
+        Column name to differentiate shapefile while merging.
 
     df_output: pd.DataFrame (optional)
         pd.DataFrame to be concatenated with the newly created pd.DataFrame
@@ -71,7 +114,7 @@ def compute_weighted_means_ds(
     Example
     -------
 
-    To calculate time series of spatial averages for several 'Bundeländer':\n
+    To calculate time series of spatial averages for several 'Bundelaender':\n
         - select Schleswig-Holstein, Hamburg, Bremen and Lower Saxony\n
         - Merge those regions to one new region calles NortSeaCoast\n
         - Select time slice from 2007 to 2009\n
@@ -81,13 +124,14 @@ def compute_weighted_means_ds(
         import xarray as xr
         import xweights as xw
 
-        netcdffile = ("/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/"
-                     "MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/"
-                     "tas/v20171121/tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_"
-                     "CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc")
+        ncf = (
+            "/tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_"
+            "CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc"
+        )
 
-        ds = xr.open_dataset(netcdffile)
-        df = xw.compute_weighted_means_ds(ds, "states",
+        ds = xr.open_dataset(ncf)
+        df = xw.compute_weighted_means_ds(ds,
+                                          region="states",
                                           subregions=["01_Schleswig-Holstein",
                                                       "02_Hamburg",
                                                       "03_Niedersachsen",
@@ -117,7 +161,21 @@ def compute_weighted_means_ds(
     if time_range:
         ds = ds.sel(time=slice(time_range[0], time_range[1]))
 
-    out = spatial_averaging(ds, shp, savg=averager)
+    gdf = _get_gdf(
+        gdf=gdf,
+        region=region,
+        subregion=subregion,
+        merge=merge_columns,
+        column=column_merge,
+    )
+
+    averager = _get_averager(
+        averager=averager,
+        ds=ds,
+        gdf=gdf,
+    )
+
+    out = spatial_averaging(ds, gdf, savg=averager)
     drop = [i for i in out.coords if not out[i].dims]
     out = out.drop(labels=drop)
 
@@ -157,17 +215,17 @@ def compute_weighted_means_ds(
 
 
 def compute_weighted_means(
-    input,
+    dataset_dict,
     region=None,
     subregion=None,
-    shp=None,
-    domain_name=None,
+    gdf=None,
     averager=False,
+    averager_ds=None,
     time_range=None,
     column_names=[],
     merge_columns=False,
     column_merge=False,
-    outdir=None,
+    output=None,
     land_only=False,
     time_stat=False,
     **kwargs
@@ -178,10 +236,10 @@ def compute_weighted_means(
 
     Parameters
     ----------
-    input: str or list
-        Valid input files are netCDF file(s),
-        directories containing those files
-        and intake-esm catalogue files
+    dataset_dict: dict
+        Input dictionary.
+        Key: xr.dataset name
+        Value: xr.Dataset
 
     region: str (optional)
         Name of the shapefile or pre-defined region
@@ -191,19 +249,20 @@ def compute_weighted_means(
     subregion: str or list (optional)
         Name of the subregion(s) to be selected from ``region``
 
-    shp: gp.GeoDataFrame (optional)
+    gdf: gp.GeoDataFrame (optional)
         gp.GeoDataFrame containing the information
         needed for xesmf's spatial averaging
 
-    domain_name: str (optional)
-        Name of the CORDEX_domain.
-        This is only needed if ``ds`` does not have
-        longitude and latitude vertices.
     averager: bool or xesmf.SpatialAverager object (optional)
-        If True: Calculate one xesmf.SpatialAverager to use for all ds'.
+        If True: Calculate one xesmf.SpatialAverager to use for all datasets.
+        `ds_averager` is needed.
         If False or None: Calculate a xesmf.SpatialAverager
         individually for each ds.
         Else use user-given xesmf.SpatialAverager
+
+    averager_ds: xr.Dataset
+        If `averager` is True use for calculating one xesmf.SpatialAverager
+        to use for all dataset.
 
     time_range: list (optional)
         List containing start and end date to be select
@@ -220,7 +279,7 @@ def compute_weighted_means(
     column_merge: str (optional)
         Column name to differentiate shapefile while merging.
 
-    outdir: str (optional)
+    outdput: str (optional)
         Name of the output directory path or file
 
     land_only: bool (optional)
@@ -241,7 +300,7 @@ def compute_weighted_means(
     Example
     -------
 
-    To calculate time series of spatial averages for several 'Bundeländer':\n
+    To calculate time series of spatial averages for several 'Bundelaender':\n
         - select Schleswig-Holstein, Hamburg, Bremen and Lower Saxony\n
         - Merge those regions to one new region calles NortSeaCoast\n
         - Select time slice from 2007 to 2009\n
@@ -249,13 +308,20 @@ def compute_weighted_means(
     ::
 
         import xweights as xw
+        import xarray as xr
 
-        netcdffile = ("/work/kd0956/CORDEX/data/cordex/output/EUR-11/CLMcom/"
-                     "MIROC-MIROC5/rcp85/r1i1p1/CLMcom-CCLM4-8-17/v1/mon/tas/"
-                     "v20171121/tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_"
-                     "CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc"
+        nc = (
+            "tas_EUR-11_MIROC-MIROC5_rcp85_r1i1p1_"
+            "CLMcom-CCLM4-8-17_v1_mon_200601-201012.nc"
+        )
 
-        df = xw.compute_weighted_means_ds(netcdffile, 'states',
+        ds = xr.open_dataset(nc)
+        dataset_dict = {
+            "EUR-11_MIROC-MIROC5_rcp85_r1i1p1_CLMcom-CCLM4-8-17_v1_mon": ds,
+        }
+
+        df = xw.compute_weighted_means_ds(dataset_dict,
+                                          'states',
                                           subregions=['01_Schleswig-Holstein,
                                                       '02_Hamburg',
                                                       '03_Niedersachsen',
@@ -277,22 +343,27 @@ def compute_weighted_means(
     def _calc_time_statistics(ds, statistics):
         return ds
 
-    if shp is None:
-        shp = get_region(
-            region, name=subregion, merge=merge_columns, column=column_merge
-        )
+    gdf = _get_gdf(
+        gdf=gdf,
+        region=region,
+        subregion=subregion,
+        merge=merge_columns,
+        column=column_merge,
+    )
 
-    if averager is True:
-        averager = get_spatial_averager(domain_name, shp.geometry)
-    elif averager is False:
-        averager = domain_name
-    dataset_dict = Input(input, **kwargs).dataset_dict
+    averager = _get_averager(
+        averager=averager,
+        ds=averager_ds,
+        gdf=gdf,
+    )
+    if isinstance(averager, bool):
+        averager = True
 
     df_output = pd.DataFrame()
     for name, ds in dataset_dict.items():
         df_output = compute_weighted_means_ds(
             ds,
-            shp,
+            gdf=gdf,
             ds_name=name,
             time_range=time_range,
             column_names=column_names,
@@ -302,7 +373,7 @@ def compute_weighted_means(
             time_stat=time_stat,
         )
 
-    if outdir:
-        write_to_csv(df_output, outdir)
+    if output:
+        write_to_csv(df_output, output)
 
     return df_output

@@ -27,7 +27,7 @@ def _get_geodataframe(shape, name="name"):
 
 
 class Regions:
-    """The :class:`Regions` provides gp.GeoDataFrames of pre-defined regions.
+    """The class `Regions` provides gp.GeoDataFrames of pre-defined regions.
     In addition, you can create a new region gp.GeoDataFrame by specifying
     a shapefile on disk.
 
@@ -113,7 +113,7 @@ class Regions:
         def __init__(self):
             self.description = "AR6-IPCC-WGI Ref. Regions v4"
             self.geodataframe = self._ipcc()
-            self.selection = "name"
+            self.selection = "Acronym"
 
         def _ipcc(self):
             url_base = (
@@ -254,7 +254,7 @@ def get_region(region_names, name=None, merge=None, column=None):
             else:
                 column = getattr(regions, region).selection
         else:
-            raise FileNotFoundError("File {} not available".format(region))
+            raise FileNotFoundError(f"File {region} not available")
         if name:
             gdf += [regions.get_subset(region, name)]
         else:

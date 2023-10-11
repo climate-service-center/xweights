@@ -26,6 +26,8 @@ def write_to_pandas(da, column_dict={}, name="name"):
     df = da.to_dataframe()
     for key, value in column_dict.items():
         if isinstance(value, dict):
+            if key not in df.columns:
+                continue
             mask = df[key].notnull()
             for k, v in value.items():
                 if k in df.columns:
@@ -47,7 +49,7 @@ def concat_dataframe(dataframe, ds, variables=None, **kwargs):
     dataframe: pd.DataFrame
         Already existing pd.DataFrame, can also be empty.
 
-    ds: xr.DataSet
+    ds: xr.Dataset
 
     variables: str or list, default: `ds.vars`
         Names(s) of the xr.Dataset variables to be written to the pd.DataFrame
@@ -90,4 +92,4 @@ def write_to_csv(dataframe, output):
     else:
         outfile = output + ".csv"
     dataframe.to_csv(outfile)
-    print("File written: {}".format(outfile))
+    print(f"File written: {outfile}")

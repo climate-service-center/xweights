@@ -1,11 +1,12 @@
 name: xweights-tests
+
 channels:
     - conda-forge
     - nodefaults
+
 dependencies:
     - dask
     - geopandas
-    - intake-esm
     - xarray
     - py-cordex
     - cartopy
@@ -13,7 +14,7 @@ dependencies:
     - numpy
     - setuptools
     - pooch
-    - netCDF4
+    - pip
     # for testing
     - pytest
     - pytest-cov
