@@ -8,17 +8,17 @@ Instructions how to add a new shape file of a new region to xweights.
 
 Here it is explained on the example of the IPCC_ Reference Regions: IPCC-WGI Reference Regions version 4:
 
-	   
+
  * Fork https://github.com/ludwiglierhammer/test_data to your own github account.
-   
+
  * Make a new branch (git checkout -b your-branch-name).
-   
+
  * Add your zipped shape file to the directory shp.
-   
+
  * push
-   
+
  * make pull request
-   
+
 
 xweights:
 .........
