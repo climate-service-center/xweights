@@ -13,7 +13,7 @@ Here it is explained on the example of the IPCC_ Reference Regions: IPCC-WGI Ref
 
  * Make a new branch (git checkout -b your-branch-name).
 
- * Add your zipped sape file to the directory shp.
+ * Add your zipped shape file to the directory shp.
 
  * push
 
@@ -28,7 +28,7 @@ Same procedure now for xweight, fork github/xweights to your github account, pul
 
 Edit:
 .....
-=======
+
 Hier eine Anleitung, wie du weitere Regionen hinzufügen kannst (am Beispiel SREX):
 ..................................................................................
 
@@ -42,7 +42,6 @@ Editiere die Datei
 .. code-block:: console
 
 		xweights/_regions.py:
-
 L.51: Add your new region to the list (e.g. ipcc):
 
 .. code-block:: console
@@ -69,7 +68,6 @@ copy the class counties_merged and add it again with your new name e.g. ipcc and
 
 		def _ipcc(self):
 
-=======
 L.51: Erweiter die Liste um den Namen deiner neuen Region.
 
 .. code-block:: console
@@ -99,13 +97,12 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
 		    "https://github.com/ludwiglierhammer/test_data/raw/main/shp"  # noqa
 		    )
 		    url = os.path.join(
-		          url_base, "<name_deiner_zip_datei>",
+		          url_base, "<name_of your_zip_shape file>"
 			  )
 		    shape_zip = _pooch_retrieve(
                     url,
-                    known_hash="2ca82af334aee2afdcce4799d5cc1ce50ce7bd0710c9ec39e6378519df60ad7a",  # noqa
+                    known_hash="2ca82af334aee2afdcce4799d5cc1ce50ce7bd0710c9ec39e6378519df60ad7a", # noqa
                      )
-<<<<<<< HEAD
                     return _get_geodataframe(shape_zip, name="IPCCv4")
 
 
@@ -115,16 +112,11 @@ You can replace the known_hash with the HASH of your zipped file. This will be d
 
 .. code-block:: console
 
-		xweights -which_regions
+		xweights which_regions
 
 
 
 .. _ipcc: https://github.com/IPCC-WG1/Atlas/tree/main/reference-regions
-=======
-                    return _get_geodataframe(shape_zip, name="SREX_Region")
-
-
-Den known_hash kannst du mit dem HASH deiner gezippten Datei ersetzen. Dieser wird dir angezeigt, wenn du folgendes ausführst:
 
 .. code-block:: console
 
