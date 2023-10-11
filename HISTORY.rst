@@ -71,3 +71,8 @@ History
 
 * function `compute_weighted_means_ds`: parameters are now similar to `compute_weighted_means`
 * command-line interface is no longer available
+
+0.3.1 (unpublished)
+-------------------
+
+* more documentation
