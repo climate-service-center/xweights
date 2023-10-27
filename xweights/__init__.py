@@ -16,5 +16,5 @@ from .xweights import compute_weighted_means, compute_weighted_means_ds
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 __author__ = """Ludwig Lierhammer"""
-__email__ = "ludwig.lierhammer@hereon.de"
+__email__ = "ludwig.lierhammer@dwd.de"
 __version__ = "0.3.1"
