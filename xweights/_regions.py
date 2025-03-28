@@ -1,3 +1,4 @@
+
 import os
 
 import cordex as cx
@@ -45,6 +46,9 @@ class Regions:
             Containing information about PRUDENCE regions
         *ipcc:* class
             containing AR6-IPCC-WGI Reference Regions v4 from the Atlas
+        *countries_world: class
+            containing countries of the world from 
+            http://www.naturalearthdata.com
         *userreg*: class
             Containing information about user-given shapefile
     """
@@ -56,12 +60,14 @@ class Regions:
             "states",
             "prudence",
             "ipcc",
+            "countries_world",
         ]
         self.counties = self.Counties()
         self.counties_merged = self.Counties_merged()
         self.states = self.States()
         self.prudence = self.Prudence()
         self.ipcc = self.IPCC()
+        self.countries_world = self.countries_world()
         self.userreg = self.UserRegion(geodataframe, selection)
 
     def get_region_names(self, regionname):
@@ -145,6 +151,25 @@ class Regions:
             self.description = ""
             self.geodataframe = geodataframe
             self.selection = selection
+
+    class countries_world:
+        def __init__(self):
+            self.description = "countries of the world from NaturalEarth"
+            self.geodataframe = self._countries_world()
+            self.selection = "SOVEREIGNT"
+
+        def _countries_world(self):
+            url_base = (
+                "https://github.com/ludwiglierhammer/test_data/raw/main/shp"  # noqa
+            )
+            url = os.path.join(
+                url_base, "ne_10m_admin_0_countries.zip"
+            )  # noqa
+            shape_zip = _pooch_retrieve(
+                url,
+                known_hash="ce1ac7036499a0edd641fbc093cd209a98f96a49d2eca8480aaacad35138a7f6",  # noqa
+            )
+            return _get_geodataframe(shape_zip, name="world")
 
 
 def _region_dict(func, reg):
