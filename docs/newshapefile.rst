@@ -42,7 +42,8 @@ Editiere die Datei
 .. code-block:: console
 
 		xweights/_regions.py:
-L.47: Add a discription
+L.47: Add a description
+
 L.56: Add your new region to the list (e.g. ipcc):
 
 .. code-block:: console
@@ -91,7 +92,7 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
 		      "S-REX regions"
 		      )
 		      self.geodataframe = self._srex()
-		      self.selection = "name"   --> THIS "name" is individual by dataset see details below
+		      self.selection = "name"   --> THIS "name" is the individual column of the dataset see details below
 
 		def _srex(self):
 		    url_base = (
@@ -123,7 +124,7 @@ You can replace the known_hash with the HASH of your zipped file. This will be d
 
 		xweights which_regions
 
-If you like to determine the name of the column, wher your subregions are store:
+If you like to determine the name of the column, where your subregions are store:
 
 .. code-block:: console
 
