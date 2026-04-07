@@ -32,7 +32,7 @@ Edit:
 Hier eine Anleitung, wie du weitere Regionen hinzufügen kannst (am Beispiel SREX):
 ..................................................................................
 
-Erstelle in meinen repository test_data einen neuen branch.
+Erstelle im github repository test_data einen neuen branch.
 Füge im Verzeichnis shp deinen gezippten shape file hinzu und pushe das Ganze.
 Nun kannst du einen pull request stellen.
 Erstelle einen neuen branch in weights.
@@ -42,7 +42,9 @@ Editiere die Datei
 .. code-block:: console
 
 		xweights/_regions.py:
-L.51: Add your new region to the list (e.g. ipcc):
+L.47: Add a description
+
+L.56: Add your new region to the list (e.g. ipcc):
 
 .. code-block:: console
 
@@ -90,7 +92,7 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
 		      "S-REX regions"
 		      )
 		      self.geodataframe = self._srex()
-		      self.selection = "name"
+		      self.selection = "name"   --> THIS "name" is the individual column of the dataset see details below
 
 		def _srex(self):
 		    url_base = (
@@ -103,7 +105,7 @@ Kopiere die Klasse Counties_merged und füge sie als neue Klasse unter dem Namen
                     url,
                     known_hash="2ca82af334aee2afdcce4799d5cc1ce50ce7bd0710c9ec39e6378519df60ad7a", # noqa
                      )
-                    return _get_geodataframe(shape_zip, name="IPCCv4")
+                    return _get_geodataframe(shape_zip, name="IPCCv4") --> This can be chosen by yourself
 
 
 
@@ -121,3 +123,17 @@ You can replace the known_hash with the HASH of your zipped file. This will be d
 .. code-block:: console
 
 		xweights which_regions
+
+If you like to determine the name of the column, where your subregions are store:
+
+.. code-block:: console
+
+        import geopandas as gpd
+        #  open shape file
+        shapefile_path = 'path/file.shp'
+        gdf = gpd.read_file(shapefile_path)
+
+        # Display the column names
+        print(gdf.columns)
+
+You can play around with your shape file in the Notebook of this repository
